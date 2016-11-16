@@ -6,6 +6,8 @@ import repast.simphony.context.space.continuous.ContinuousSpaceFactoryFinder;
 import repast.simphony.context.space.grid.GridFactory;
 import repast.simphony.context.space.grid.GridFactoryFinder;
 import repast.simphony.dataLoader.ContextBuilder;
+import repast.simphony.engine.schedule.Schedule;
+import repast.simphony.engine.schedule.ScheduleParameters;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.RandomCartesianAdder;
 import repast.simphony.space.grid.Grid;
@@ -20,6 +22,8 @@ public class ContextCreator implements ContextBuilder<Taxi> {
 		int height = 50;//= RunEnvironment.getInstance().getParameters().getInteger("spaceHeight");
 		int width = 50; //RunEnvironment.getInstance().getParameters().getInteger("spaceWidth");
 		int nbTaxis = 20;
+		int nbClients = 1;
+		Schedule schedule = new Schedule();
 		
 		//grid factory
 		GridFactory gridFactory = GridFactoryFinder.createGridFactory(null);
@@ -48,7 +52,30 @@ public class ContextCreator implements ContextBuilder<Taxi> {
 			grid.moveTo(a, xGrid, yGrid);
 		}
 		
+		/*for (int i = 0; i< nbClients;i++) //fait apparaitre clients au début
+		{
+			float xCont = (float) (Math.random() * width);
+			float yCont = (float) (Math.random() * height);
+			Customer a = new Customer(grid,space);
+			context.add(a);
+			space.moveTo(a, xCont, yCont);
+			
+			//on transmet le taxi dans l'espace discret (la grille)
+			int xGrid = (int) xCont;
+			int yGrid = (int) yCont;
+			grid.moveTo(a, xGrid, yGrid);
+		}*/
+		
+	
+		//apparition des clients
+
+		//double ticknumber = (Math.random()+1) * 5000 * i ;
+		ScheduleParameters scheduleParam  =  ScheduleParameters.createRepeating(0, 3000);
+		schedule.createAction(scheduleParam, this, spawnCustomer()/* TODO : on doit ici mettre la fonction permettant de définir l'apparition des clients*/);
+
 		
 		return context;
 	}
+
+
 }
