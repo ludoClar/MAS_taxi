@@ -3,11 +3,12 @@ package test;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
+import repast.simphony.space.grid.Grid;
 
 public class FreeTaxi extends Taxi {
 
-	public FreeTaxi(ContinuousSpace<Taxi> space) {
-		super(space);
+	public FreeTaxi(Grid<Taxi> grid,ContinuousSpace<Taxi> space) {
+		super(grid,space);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -27,8 +28,8 @@ public class FreeTaxi extends Taxi {
 			lastCalc = 20;
 		}
 		double angle = SpatialMath.calcAngleFor2DMovement(space, myPoint, otherPoint);
-		space.moveByVector(this, 0.1, angle, 0);
-		// grid.moveTo(this, (int)space.getLocation(this).getX(), (int)space.getLocation(this).getY());	
+		space.moveByVector(this, 0.1, angle, 0); //on se déplace dans l'espace
+		grid.moveTo(this, (int)space.getLocation(this).getX(), (int)space.getLocation(this).getY()); //on recopie ce déplacement dans la grille	
 
 		//		MooreQuery<FreeTaxi> query = new MooreQuery<FreeTaxi>(space, this);
 		//		neighbours = 0;
