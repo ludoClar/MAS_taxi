@@ -19,7 +19,7 @@ public class ContextCreator implements ContextBuilder<Taxi> {
 	public Context build(Context<Taxi> context) {
 		int height = 50;//= RunEnvironment.getInstance().getParameters().getInteger("spaceHeight");
 		int width = 50; //RunEnvironment.getInstance().getParameters().getInteger("spaceWidth");
-		int nbTaxis = 100;
+		int nbTaxis = 20;
 		
 		//grid factory
 		GridFactory gridFactory = GridFactoryFinder.createGridFactory(null);
@@ -33,7 +33,7 @@ public class ContextCreator implements ContextBuilder<Taxi> {
 				new RandomCartesianAdder<Taxi>(), new repast.simphony.space.continuous.WrapAroundBorders(), 50, 50);
 		
 		//placement initial des taxis
-		for (int i = 0; i < nbTaxis; i++) //1000 Taxis placées de manière random
+		for (int i = 0; i < nbTaxis; i++) // Taxis placées de manière random
 		{	
 			//on tire un endroit aléatoire et on place le taxi dans l'espace continu
 			float xCont = (float) (Math.random() * width);
