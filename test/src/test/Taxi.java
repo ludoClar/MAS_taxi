@@ -1,16 +1,24 @@
 package test;
 
+import java.util.ArrayList;
+
 import repast.simphony.query.space.grid.MooreQuery;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.space.grid.Grid;
 
-public class FreeTaxi extends Taxi {
+public class Taxi extends Agent {
+	
+	ArrayList<Customer> clientsPossibles;
+	ArrayList<Boolean> clientSuivi;
+	
 
-	public FreeTaxi(Grid<Taxi> grid,ContinuousSpace<Taxi> space) {
+	public Taxi(Grid<Agent> grid,ContinuousSpace<Agent> space) {
 		super(grid,space);
 		// TODO Auto-generated constructor stub
+		clientsPossibles = new ArrayList<Customer>();
+		clientSuivi = new ArrayList<Boolean>();
 	}
 
 	// move the car
@@ -18,30 +26,54 @@ public class FreeTaxi extends Taxi {
 		NdPoint myPoint = space.getLocation(this);
 		NdPoint otherPoint;
 		int gridSize = 50*50;
-		int nbTaxi = 20;
+		int nbTaxi = 4;
 		int sizeToFill = (int) Math.sqrt(gridSize/nbTaxi);
 		sizeToFill  = sizeToFill/2;
-//		System.out.println(String.valueOf(sizeToFill));
-		/*if (lastCalc != 0) //si on a pas besoin  de recalculer
-		{
-			otherPoint = dest;
-			lastCalc--;
-		}
-		else //si on a besoin d'en tirer un nouveau
-		{
-			otherPoint = new NdPoint(50 * Math.random(), 50 * Math.random());
-			dest = otherPoint;
-			lastCalc = 20;
-		}*/
-
-		//on regarde si on à d'autres taxis a proximité
-		MooreQuery<Taxi> query = new MooreQuery<Taxi>(grid, this,sizeToFill,sizeToFill);
-		neighbours = 0;
-		for (Taxi o : query.query())
-			if (o instanceof FreeTaxi)
-				neighbours++;
+		boolean isBusy = false;
 		
-		if (neighbours == 0) //si pas de voisin, on ne bouge pas
+		
+		
+		MooreQuery<Agent> query = new MooreQuery<Agent>(grid, this,sizeToFill+5,sizeToFill+5);
+		neighboursTaxi = 0;
+		for (Agent o : query.query())
+			if (o instanceof Taxi)
+				neighboursTaxi++;
+		
+		query = new MooreQuery<Agent>(grid, this,24,24);
+		//neighboursClients = 0;
+		for (Agent o : query.query())
+			if (o instanceof Customer)
+			{
+				//System.out.println("ID de client : " + String.valueOf(((Customer) o).getIDclient()));
+				//neighboursClients++;
+				//System.out.println(((Customer) o).getCoordonnees().toString());
+				if (!clientsPossibles.contains(o)) //si on ne le stocke pas deja
+				{
+					clientsPossibles.add((Customer) o);
+					clientSuivi.add(true);
+				}
+					
+			}
+		
+		for (int j = 0 ; j < clientsPossibles.size();j++)
+			//System.out.println("Coordonées du client " + (j+1) + " : " + clientsPossibles.get(j).getCoordonnees().toString());
+		{
+			if (clientSuivi.get(j))
+			{
+				Coordonnees coordTaxi = new Coordonnees(space.getLocation(this).getX(), space.getLocation(this).getY());
+				double distance = clientsPossibles.get(j).getCoordonnees().getDistance(coordTaxi);
+				System.out.println("Distance taxi-client " + (j+1) + " : "+ distance);
+			}
+				
+		}
+			
+				
+		
+		//System.out.println("nombre de clients dans la zone : " + String.valueOf(neighboursClients));
+		
+		
+		//gestion de la répartition sur l'espace
+		if (neighboursTaxi == 0) //si pas de voisin, on ne bouge pas
 		{
 //			System.out.println("seul");
 			otherPoint = myPoint; //si on a pas de voisin, on reste au même endroit
@@ -67,6 +99,9 @@ public class FreeTaxi extends Taxi {
 			grid.moveTo(this, (int)space.getLocation(this).getX(), (int)space.getLocation(this).getY()); //on recopie ce déplacement dans la grille	
 		}
 				
+		//gestion des clients
+		
+		
 		
 		
 	}

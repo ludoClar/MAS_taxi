@@ -15,26 +15,26 @@ import repast.simphony.space.grid.GridBuilderParameters;
 import repast.simphony.space.grid.SimpleGridAdder;
 import repast.simphony.space.grid.WrapAroundBorders;
 
-public class ContextCreator implements ContextBuilder<Taxi> {
+public class ContextCreator implements ContextBuilder<Agent> {
 
 	@Override
-	public Context build(Context<Taxi> context) {
+	public Context build(Context<Agent> context) {
 		int height = 50;//= RunEnvironment.getInstance().getParameters().getInteger("spaceHeight");
 		int width = 50; //RunEnvironment.getInstance().getParameters().getInteger("spaceWidth");
-		int nbTaxis = 20;
-		int nbClients = 1;
+		int nbTaxis = 4;
+		int nbClients = 4;
 		Schedule schedule = new Schedule();
 		
 		//grid factory
 		GridFactory gridFactory = GridFactoryFinder.createGridFactory(null);
-		Grid<Taxi> grid = gridFactory.createGrid("grid", context,
-		new GridBuilderParameters<Taxi>(new WrapAroundBorders(),
-		new SimpleGridAdder<Taxi>(), false, 50, 50));
+		Grid<Agent> grid = gridFactory.createGrid("grid", context,
+		new GridBuilderParameters<Agent>(new WrapAroundBorders(),
+		new SimpleGridAdder<Agent>(), false, 50, 50));
 		
 		//space factory
 		ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);
-		ContinuousSpace<Taxi> space = spaceFactory.createContinuousSpace("space", context,
-				new RandomCartesianAdder<Taxi>(), new repast.simphony.space.continuous.WrapAroundBorders(), 50, 50);
+		ContinuousSpace<Agent> space = spaceFactory.createContinuousSpace("space", context,
+				new RandomCartesianAdder<Agent>(), new repast.simphony.space.continuous.WrapAroundBorders(), 50, 50);
 		
 		//placement initial des taxis
 		for (int i = 0; i < nbTaxis; i++) // Taxis placées de manière random
@@ -42,7 +42,7 @@ public class ContextCreator implements ContextBuilder<Taxi> {
 			//on tire un endroit aléatoire et on place le taxi dans l'espace continu
 			float xCont = (float) (Math.random() * width);
 			float yCont = (float) (Math.random() * height);
-			Taxi a = new FreeTaxi(grid,space);
+			Agent a = new Taxi(grid,space);
 			context.add(a);
 			space.moveTo(a, xCont, yCont);
 			
@@ -52,11 +52,14 @@ public class ContextCreator implements ContextBuilder<Taxi> {
 			grid.moveTo(a, xGrid, yGrid);
 		}
 		
-		/*for (int i = 0; i< nbClients;i++) //fait apparaitre clients au début
+		for (int i = 0; i< nbClients;i++) //fait apparaitre clients au début
 		{
 			float xCont = (float) (Math.random() * width);
 			float yCont = (float) (Math.random() * height);
+			Coordonnees coord = new Coordonnees(xCont, yCont);
 			Customer a = new Customer(grid,space);
+			a.setIDclient(i);
+			a.setCoordonnees(coord);
 			context.add(a);
 			space.moveTo(a, xCont, yCont);
 			
@@ -64,14 +67,14 @@ public class ContextCreator implements ContextBuilder<Taxi> {
 			int xGrid = (int) xCont;
 			int yGrid = (int) yCont;
 			grid.moveTo(a, xGrid, yGrid);
-		}*/
+		}
 		
 	
 		//apparition des clients
 
-		//double ticknumber = (Math.random()+1) * 5000 * i ;
-		ScheduleParameters scheduleParam  =  ScheduleParameters.createRepeating(0, 3000);
-		schedule.createAction(scheduleParam, this, spawnCustomer()/* TODO : on doit ici mettre la fonction permettant de définir l'apparition des clients*/);
+//		//double ticknumber = (Math.random()+1) * 5000 * i ;
+//		ScheduleParameters scheduleParam  =  ScheduleParameters.createRepeating(0, 3000);
+//		schedule.createAction(scheduleParam, this, spawnCustomer()/* TODO : on doit ici mettre la fonction permettant de définir l'apparition des clients*/);
 
 		
 		return context;

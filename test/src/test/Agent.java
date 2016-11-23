@@ -5,21 +5,23 @@ import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.space.grid.Grid;
 
-public abstract class Taxi {
-	protected ContinuousSpace<Taxi> space;
-	protected Grid<Taxi> grid; //la grille servira à simplifier le nombre de calculs servant a savoir si un taxi est proche ou pas
+public abstract class Agent {
+	protected ContinuousSpace<Agent> space;
+	protected Grid<Agent> grid; //la grille servira à simplifier le nombre de calculs servant a savoir si un taxi est proche ou pas
 	protected boolean free;
 	protected int lastCalc;
 	protected NdPoint dest;
-	protected int neighbours;
+	protected int neighboursTaxi;
+	protected int neighboursClients;
 
-	public Taxi(Grid<Taxi> grid,ContinuousSpace<Taxi> space) {
+	public Agent(Grid<Agent> grid,ContinuousSpace<Agent> space) {
 		this.space = space;
 		this.grid = grid;
 		free = true;
 		lastCalc = 0;
 		dest = new NdPoint(0, 0);
-		neighbours = 0;
+		neighboursTaxi = 0;
+		neighboursClients = 0;
 	}
 
 	@ScheduledMethod(start = 1, interval = 1, priority = 2)

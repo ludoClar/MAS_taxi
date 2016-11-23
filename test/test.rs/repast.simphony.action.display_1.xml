@@ -1,24 +1,24 @@
 <repast.simphony.visualization.engine.CartesianDisplayDescriptor>
-  <name>A Display</name>
+  <name>Display Space</name>
   <type>2D</type>
   <styles>
     <entry>
-      <string>test.BusyTaxi</string>
+      <string>test.Customer</string>
       <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
     </entry>
     <entry>
-      <string>test.FreeTaxi</string>
+      <string>test.Taxi</string>
       <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
     </entry>
   </styles>
   <editedStyles>
     <entry>
-      <string>test.BusyTaxi</string>
-      <string>test.BusyTaxi.style_3.xml</string>
+      <string>test.Customer</string>
+      <string>test.Customer.style_4.xml</string>
     </entry>
     <entry>
-      <string>test.FreeTaxi</string>
-      <string>test.FreeTaxi.style_1.xml</string>
+      <string>test.Taxi</string>
+      <string>test.Taxi.style_0.xml</string>
     </entry>
   </editedStyles>
   <netStyles/>
@@ -31,19 +31,19 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>938826807</hashCode>
+    <hashCode>2102012069</hashCode>
   </schedParams>
   <layoutClassName>foo.bar.baz</layoutClassName>
   <layoutProjection>space</layoutProjection>
   <layoutInterval>0</layoutInterval>
   <layerOrder>
     <entry>
-      <string>test.BusyTaxi</string>
-      <int>1</int>
+      <string>test.Customer</string>
+      <int>0</int>
     </entry>
     <entry>
-      <string>test.FreeTaxi</string>
-      <int>0</int>
+      <string>test.Taxi</string>
+      <int>1</int>
     </entry>
   </layerOrder>
   <projections>

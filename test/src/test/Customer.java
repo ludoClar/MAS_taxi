@@ -7,12 +7,13 @@ import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.space.grid.Grid;
 
-public class Customer extends Taxi{
+public class Customer extends Agent{
 	protected ContinuousSpace<Customer> space;
 	protected Grid<Customer> grid;
-	int lastCalc;
 	NdPoint dest;
 	int neighbours;
+	int IDclient;
+	Coordonnees coordonnees;
 
 	/*public Customer(Grid<Customer> grid,ContinuousSpace<Customer> space) {
 		this.space = space;
@@ -22,7 +23,23 @@ public class Customer extends Taxi{
 		neighbours = 0;
 	}*/
 	
-	public Customer(Grid<Taxi> grid,ContinuousSpace<Taxi> space) {
+	public int getIDclient() {
+		return IDclient;
+	}
+
+	public Coordonnees getCoordonnees() {
+		return coordonnees;
+	}
+
+	public void setCoordonnees(Coordonnees coordonnees) {
+		this.coordonnees = coordonnees;
+	}
+
+	public void setIDclient(int iDclient) {
+		IDclient = iDclient;
+	}
+
+	public Customer(Grid<Agent> grid,ContinuousSpace<Agent> space) {
 		super(grid,space);
 		// TODO Auto-generated constructor stub
 	}
