@@ -2,6 +2,9 @@ package test;
 
 import java.util.ArrayList;
 
+import com.sun.prism.paint.Color;
+
+import repast.simphony.context.Context;
 import repast.simphony.engine.watcher.Watch;
 import repast.simphony.engine.watcher.WatcherTriggerSchedule;
 import repast.simphony.query.space.grid.MooreQuery;
@@ -9,6 +12,7 @@ import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.space.grid.Grid;
+import repast.simphony.util.ContextUtils;
 
 public class Taxi extends Agent {
 	
@@ -24,10 +28,10 @@ public class Taxi extends Agent {
 		super(grid,space);
 		clientsPossibles = new ArrayList<Customer>();
 		clientSuivi = new ArrayList<Boolean>();
+		minDistReceived = new ArrayList<Double>(); //on met le nombre de base très haut pour que la détection ne soit pas faussée
 		watched = 0;
 		loadedCustomer = null;
 		preparedMessage = "";
-		minDistReceived = new ArrayList<Double>(); //on met le nombre de base très haut pour que la détection ne soit pas faussée
 	}
 
 	public String getPreparedMessage() {
@@ -186,6 +190,7 @@ public class Taxi extends Agent {
 			//move to the destination
 			//TODO: faire disparaitre client du dessin
 			loadedCustomer = cust;
+			
 			NdPoint myPoint = space.getLocation(this);
 			NdPoint otherPoint = new NdPoint(cust.getdestination().getX(), cust.getdestination().getY());
 			//System.out.println(otherPoint.toString());
@@ -199,17 +204,24 @@ public class Taxi extends Agent {
 			if(distance<0.5)
 			{
 				loadedCustomer=null;
+				
+				//ATTENTION!! A ENLEVER
+				Context context = ContextUtils.getContext(this); 
+				context.remove(cust);
+				
+				
 				//TODO: nettoyer la liste taxis les plus proches des clients
+				//flush lists? 
+				clientsPossibles = new ArrayList<Customer>();
+				clientSuivi = new ArrayList<Boolean>();
+				minDistReceived = new ArrayList<Double>();
 			}
 		}
-		
-		//check if the ride is over
-		//calculate the distance to destination
-		//if dist<threshold, loaded = null
-		
 	
 	}
 
+	
+	
 	
 	@Override
 	public void implement() {
