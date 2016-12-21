@@ -14,6 +14,7 @@ public class Customer extends Agent{
 	int neighbours;
 	int IDclient;
 	Coordonnees coordonnees;
+	Coordonnees destination;
 
 	/*public Customer(Grid<Customer> grid,ContinuousSpace<Customer> space) {
 		this.space = space;
@@ -31,6 +32,14 @@ public class Customer extends Agent{
 		return coordonnees;
 	}
 
+	public void setDestination(Coordonnees destination) {
+		this.destination = destination;
+	}
+	
+	public Coordonnees getdestination() {
+		return destination;
+	}
+
 	public void setCoordonnees(Coordonnees coordonnees) {
 		this.coordonnees = coordonnees;
 	}
@@ -41,7 +50,11 @@ public class Customer extends Agent{
 
 	public Customer(Grid<Agent> grid,ContinuousSpace<Agent> space) {
 		super(grid,space);
-		// TODO Auto-generated constructor stub
+		//calculate the destination
+		float xCont = (float) (Math.random() * 50);
+		float yCont = (float) (Math.random() * 50);
+		Coordonnees coord = new Coordonnees(xCont, yCont);
+		setDestination(coord);
 	}
 
 	public int getNeighbours() {
