@@ -15,18 +15,17 @@ public class Taxi extends Agent {
 	ArrayList<Customer> clientsPossibles;
 	ArrayList<Boolean> clientSuivi;
 	int watched;
-	protected boolean free;
+	Customer loadedCustomer;
 	String preparedMessage;
 	ArrayList<Double> minDistReceived;
 	
 
 	public Taxi(Grid<Agent> grid,ContinuousSpace<Agent> space) {
 		super(grid,space);
-		// TODO Auto-generated constructor stub
 		clientsPossibles = new ArrayList<Customer>();
 		clientSuivi = new ArrayList<Boolean>();
 		watched = 0;
-		free = true;
+		loadedCustomer = null;
 		preparedMessage = "";
 		minDistReceived = new ArrayList<Double>(); //on met le nombre de base très haut pour que la détection ne soit pas faussée
 	}
@@ -86,6 +85,8 @@ public class Taxi extends Agent {
 				//si la distance calculée est inférieure à la distance que l'on a reçu : 
 				if (minDistReceived.get(j)>=distance)
 				{
+					System.out.println(minDistReceived.get(j));
+					System.out.println(distance);
 					//watched = message; //on annonce à tout le monde que l'on est plus proche
 					//System.out.println("je suis plus proche");
 					setPreparedMessage(message);
@@ -103,7 +104,12 @@ public class Taxi extends Agent {
 			}
 				
 		}
-				
+			
+		
+		if(loadedCustomer != null)
+		{
+			moveTo(loadedCustomer);
+		}
 		//gestion des clients
 		/*System.out.println("Liste du taxi : ");
 		for (int p = 0 ; p < minDistReceived.size();p++)
@@ -137,46 +143,38 @@ public class Taxi extends Agent {
 
 	}
 	
-	/*public void moveTo(Customer cust)
+	/*
+	  	public void moveTo(Customer cust)
 	{
-		//otherPoint = new NdPoint(50 * Math.random(), 50 * Math.random()); //on part dans une direction random
 		Coordonnees coordTaxi = new Coordonnees(space.getLocation(this).getX(), space.getLocation(this).getY());
 		double distance = cust.getCoordonnees().getDistance(coordTaxi); //on calcule la distance par rapport au client
 		System.out.println("Distance taxi-client pour le déplacement vers le client : "+ distance);
 		
-		if (distance < 0.05)
-		{
-			NdPoint myPoint = space.getLocation(this);
-			NdPoint otherPoint = space.getLocation(cust);
-			
-			double angle = SpatialMath.calcAngleFor2DMovement(space, myPoint, otherPoint);
-			//déplacemement
-			space.moveByVector(this, 0.1, angle, 0); //on se déplace dans l'espace
-			grid.moveTo(this, (int)space.getLocation(this).getX(), (int)space.getLocation(this).getY()); //on recopie ce déplacement dans la grille	
-			}
-		/*else
-		{
-			NdPoint myPoint = space.getLocation(this);
-			NdPoint otherPoint = new NdPoint(cust.getdestination().getX(),cust.getdestination().getY());
-			
-			double angle = SpatialMath.calcAngleFor2DMovement(space, myPoint, otherPoint);
-			//déplacemement
-			space.moveByVector(this, 0.1, angle, 0); //on se déplace dans l'espace
-			grid.moveTo(this, (int)space.getLocation(this).getX(), (int)space.getLocation(this).getY()); //on recopie ce déplacement dans la grille
-		}
+		//otherPoint = new NdPoint(50 * Math.random(), 50 * Math.random()); //on part dans une direction random
+		NdPoint myPoint = space.getLocation(this);
+		NdPoint otherPoint = space.getLocation(cust);
+		
+		double angle = SpatialMath.calcAngleFor2DMovement(space, myPoint, otherPoint);
+		//déplacemement
+		space.moveByVector(this, 0.1, angle, 0); //on se déplace dans l'espace
+		grid.moveTo(this, (int)space.getLocation(this).getX(), (int)space.getLocation(this).getY()); //on recopie ce déplacement dans la grille	
 	
-	}*/
+	}
+	
+	*/
 	
 	public void moveTo(Customer cust)
 	{
 		Coordonnees coordTaxi = new Coordonnees(space.getLocation(this).getX(), space.getLocation(this).getY());
 		double distance = cust.getCoordonnees().getDistance(coordTaxi); //on calcule la distance par rapport au client
-		System.out.println("Distance taxi-client pour le déplacement vers le client : "+ distance);
+		//System.out.println("Distance taxi-client pour le déplacement vers le client : "+ distance);
 		
-		if (distance > 0.5 && free)
+		if (distance > 0.5 && loadedCustomer == null)
 		{
+			//move to the customer
 			NdPoint myPoint = space.getLocation(this);
 			NdPoint otherPoint = space.getLocation(cust);
+			//System.out.println(otherPoint.toString());
 			
 			double angle = SpatialMath.calcAngleFor2DMovement(space, myPoint, otherPoint);
 			//déplacemement
@@ -185,16 +183,30 @@ public class Taxi extends Agent {
 		}
 		else
 		{
-			System.out.println("on est dans le else");
-			free = false;
+			//move to the destination
+			//TODO: faire disparaitre client du dessin
+			loadedCustomer = cust;
 			NdPoint myPoint = space.getLocation(this);
 			NdPoint otherPoint = new NdPoint(cust.getdestination().getX(), cust.getdestination().getY());
+			//System.out.println(otherPoint.toString());
 			
 			double angle = SpatialMath.calcAngleFor2DMovement(space, myPoint, otherPoint);
 			//déplacemement
 			space.moveByVector(this, 0.1, angle, 0); //on se déplace dans l'espace
 			grid.moveTo(this, (int)space.getLocation(this).getX(), (int)space.getLocation(this).getY()); //on recopie ce déplacement dans la grille
+			//check if the ride is over
+			distance = space.getDistance(myPoint, otherPoint);
+			if(distance<0.5)
+			{
+				loadedCustomer=null;
+				//TODO: nettoyer la liste taxis les plus proches des clients
+			}
 		}
+		
+		//check if the ride is over
+		//calculate the distance to destination
+		//if dist<threshold, loaded = null
+		
 	
 	}
 
