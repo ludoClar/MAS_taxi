@@ -8,7 +8,7 @@
     </entry>
     <entry>
       <string>test.Taxi</string>
-      <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
+      <string>test.AgentStyle2D</string>
     </entry>
   </styles>
   <editedStyles>
@@ -18,7 +18,7 @@
     </entry>
     <entry>
       <string>test.Taxi</string>
-      <string>test.Taxi.style_0.xml</string>
+      <null/>
     </entry>
   </editedStyles>
   <netStyles/>
@@ -31,7 +31,7 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>2102012069</hashCode>
+    <hashCode>-461368330</hashCode>
   </schedParams>
   <layoutClassName>foo.bar.baz</layoutClassName>
   <layoutProjection>space</layoutProjection>

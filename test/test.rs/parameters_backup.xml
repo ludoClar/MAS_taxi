@@ -6,8 +6,14 @@
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
 		/>
-				<parameter name="spaceHeight" displayName="Space Height" type="int" 
-						defaultValue="50" 
+				<parameter name="nbTaxis" displayName="Nombre de taxis" type="int" 
+						defaultValue="5" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									
+		/>
+				<parameter name="nbClients" displayName="Nombre de clients" type="int" 
+						defaultValue="10" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
