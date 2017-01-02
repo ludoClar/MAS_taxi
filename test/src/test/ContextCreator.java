@@ -17,6 +17,8 @@ import repast.simphony.space.grid.WrapAroundBorders;
 
 public class ContextCreator implements ContextBuilder<Agent> {
 
+	Context<Agent> context;
+
 	@Override
 	public Context build(Context<Agent> context) {
 		int height = 50;//= RunEnvironment.getInstance().getParameters().getInteger("spaceHeight");
@@ -57,8 +59,9 @@ public class ContextCreator implements ContextBuilder<Agent> {
 			float xCont = (float) (Math.random() * width);
 			float yCont = (float) (Math.random() * height);
 			Coordonnees coord = new Coordonnees(xCont, yCont);
-			Customer a = new Customer(grid, space);
-			a.setIDclient(i);
+			Source a = new Source(grid, space);
+			//Customer a = new Customer(grid, space);
+			//a.setIDclient(i);
 			a.setCoordonnees(coord);
 			context.add(a);
 			space.moveTo(a, xCont, yCont);

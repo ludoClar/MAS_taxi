@@ -70,7 +70,6 @@ public class Customer extends Agent {
 	@Override
 	public void compute() {
 		++satisfaction;
-
 	}
 
 }
