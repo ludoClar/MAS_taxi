@@ -1,5 +1,7 @@
 package test;
 
+import java.util.Random;
+
 import repast.simphony.context.Context;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.space.continuous.ContinuousSpace;
@@ -8,10 +10,11 @@ import repast.simphony.util.ContextUtils;
 
 public class Source extends Agent {
 	protected Coordonnees coordonnees;
+	protected int pourcentageBaby;
 	int i = 0;
 	int step = 0;
 	int start = 0;
-	
+
 	public void setStep(int step) {
 		this.step = step;
 	}
@@ -20,9 +23,9 @@ public class Source extends Agent {
 		this.start = start;
 	}
 
-	public Source(Grid<Agent> grid, ContinuousSpace<Agent> space) {
+	public Source(Grid<Agent> grid, ContinuousSpace<Agent> space, int pourcentageBaby) {
 		super(grid, space);
-
+		this.pourcentageBaby = pourcentageBaby;
 	}
 
 	public void compute() {
@@ -31,8 +34,9 @@ public class Source extends Agent {
 
 	@ScheduledMethod(start = 1, interval = 200, priority = 2)
 	public void implement() {
-		//System.out.println("In clients créés : ");
-		Customer a = new Customer(grid, space);
+		boolean baby = (new Random().nextInt()) % 100 + 1 <= pourcentageBaby ? true : false;
+		System.out.println("In clients créés : ");
+		Customer a = new Customer(grid, space, baby);
 		int satisfaction = (int) ((Math.random() * 50) + 50);
 		a.setIDclient(start + i * step);
 		a.setCoordonnees(this.coordonnees);

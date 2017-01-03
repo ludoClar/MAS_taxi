@@ -32,5 +32,4 @@ public abstract class Agent {
 
 	@ScheduledMethod(start = 1, interval = 1, priority = 1)
 	public abstract void implement();
-
 }

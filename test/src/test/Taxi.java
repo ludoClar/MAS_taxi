@@ -130,9 +130,8 @@ public void compute() {
 		{
 			moveTo(destination);
 		}
-		else
-		{
-			if (memory>0)
+		else {
+			if (memory > 0)
 				memory--;
 			else //quand le timer de la mémoire atteint 0, on l'efface
 			{
@@ -159,7 +158,6 @@ public void compute() {
 			 * 		return
 			 * 
 			 */
-			
 		}
 	}
 
@@ -241,6 +239,7 @@ public void compute() {
 				minDistReceived = new ArrayList<Double>();
 			}
 		}
+<<<<<<< HEAD
 	}*/
 	
 	public void moveTo(Customer cust) {
@@ -274,7 +273,7 @@ public void compute() {
 			}
 		//}
 	}
-	
+
 	public void moveTo(Coordonnees coordonnes) {
 		Coordonnees coordTaxi = new Coordonnees(space.getLocation(this).getX(), space.getLocation(this).getY());
 		double distance = coordonnes.getDistance(coordTaxi); //on calcule la distance par rapport au client
@@ -297,13 +296,13 @@ public void compute() {
 
 	@Override
 	public void implement() {
-		
+
 	}
 
 	public boolean isFree() {
 		return this.free;
 	}
-	
+
 	//taux d'erreur ~5% avec la mémoire nettoyé, attention à ne pas avoir une mémoire trop fréquemment nettoyée
 	//un taxi allait droit sur un client, sans raison il a sauté de cible, et le premier taxi s'est fait abandonner tout le long de la simulation
 }
