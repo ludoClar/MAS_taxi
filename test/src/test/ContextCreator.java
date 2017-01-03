@@ -48,7 +48,7 @@ public class ContextCreator implements ContextBuilder<Agent> {
 			//on tire un endroit aléatoire et on place le taxi dans l'espace continu
 			float xCont = (float) (Math.random() * width);
 			float yCont = (float) (Math.random() * height);
-			Agent a = new Taxi(grid, space);
+			Agent a = new Taxi(grid, space, babySeat);
 			context.add(a);
 			space.moveTo(a, xCont, yCont);
 
