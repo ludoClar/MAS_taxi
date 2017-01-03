@@ -67,13 +67,14 @@ public class Taxi extends Agent {
 			int sizeToFill = (int) Math.sqrt(gridSize / nbTaxi);
 			sizeToFill = sizeToFill / 2;
 
-			MooreQuery<Agent> query = new MooreQuery<Agent>(grid, this, sizeToFill + 5, sizeToFill + 5);
-			neighboursTaxi = 0;
-			for (Agent o : query.query())
-				if (o instanceof Taxi)
-					neighboursTaxi++;
+			
+//			MooreQuery<Agent> query = new MooreQuery<Agent>(grid, this, sizeToFill + 5, sizeToFill + 5);
+//			neighboursTaxi = 0;
+//			for (Agent o : query.query())
+//				if (o instanceof Taxi)
+//					neighboursTaxi++;
 
-			query = new MooreQuery<Agent>(grid, this, 24, 24); //TODO: pareil, changer ça par (taillegrid/2)-1
+			/*query = new MooreQuery<Agent>(grid, this, 24, 24); //TODO: pareil, changer ça par (taillegrid/2)-1
 			for (Agent o : query.query())
 				if (o instanceof Customer) { //on observe chaque client
 					if (!clientsPossibles.contains(o)) //si on ne le stocke pas deja
@@ -84,7 +85,7 @@ public class Taxi extends Agent {
 						minDistReceived.add(10000.0); //on commence avec une très grande valeur pour ne pas perturber les autres
 					}
 
-				}
+				}*/
 
 			for (int j = 0; j < clientsPossibles.size(); j++) {
 				//System.out.println("Client potentiel en vue!");
@@ -131,7 +132,16 @@ public class Taxi extends Agent {
 				}
 			}
 		}
-
+	}
+	
+	@Watch(watcheeClassName = "test.Customer", watcheeFieldNames = "shout", whenToTrigger = WatcherTriggerSchedule.IMMEDIATE)
+	public void getCustomer(Customer customer) {
+		if (!clientsPossibles.contains(customer)) //si on ne le stocke pas deja
+		{
+			clientsPossibles.add(customer); //on le met en mémoire du taxi
+			clientSuivi.add(true);
+			minDistReceived.add(10000.0); //on commence avec une très grande valeur pour ne pas perturber les autres
+		}
 	}
 
 	/* public void moveTo(Customer cust) { Coordonnees coordTaxi = new

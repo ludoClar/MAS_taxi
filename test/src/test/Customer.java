@@ -14,10 +14,19 @@ public class Customer extends Agent {
 	Coordonnees coordonnees;
 	Coordonnees destination;
 	int satisfaction = 0;
+	int shout = 0;
 
 	/* public Customer(Grid<Customer> grid,ContinuousSpace<Customer> space) {
 	 * this.space = space; this.grid = grid; lastCalc = 0; dest = new NdPoint(0,
 	 * 0); neighbours = 0; } */
+
+	public int getSatisfaction() {
+		return satisfaction;
+	}
+
+	public void setSatisfaction(int satisfaction) {
+		this.satisfaction = satisfaction;
+	}
 
 	public int getIDclient() {
 		return IDclient;
@@ -69,7 +78,25 @@ public class Customer extends Agent {
 
 	@Override
 	public void compute() {
-		++satisfaction;
+		
+		/*
+		 * every iteration : 
+		 * 0) iteration -- : if 0, ragequit client, not satisfied
+		 * 1) prepare a message with ID-x-y
+		 * 2) shout this message to every taxi with shout (shout++)
+		 *  */
+		
+		satisfaction --;
+		if (satisfaction <= 0)
+		{
+			//TODO: client disappears, not satisfied
+		}
+		else
+		{
+			/*String message = IDclient+"_"+coordonnees.getX()+"_"+coordonnees.getY();
+			System.out.println(message);*/
+			shout ++;
+		}
 	}
 
 }
