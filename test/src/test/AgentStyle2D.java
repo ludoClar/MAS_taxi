@@ -9,7 +9,10 @@ public class AgentStyle2D extends DefaultStyleOGL2D {
 	public Color getColor(Object o) {
 		if (o instanceof Taxi) {
 			if (((Taxi) o).isFree())
-				return Color.GREEN;
+				if (((Taxi) o).hasBabySeat())
+					return Color.ORANGE;
+				else
+					return Color.GREEN;
 			else
 				return Color.RED;
 		}

@@ -1,5 +1,7 @@
 package test;
 
+import java.util.Random;
+
 import repast.simphony.context.Context;
 import repast.simphony.context.space.continuous.ContinuousSpaceFactory;
 import repast.simphony.context.space.continuous.ContinuousSpaceFactoryFinder;
@@ -25,7 +27,8 @@ public class ContextCreator implements ContextBuilder<Agent> {
 		int width = 50; //RunEnvironment.getInstance().getParameters().getInteger("spaceWidth");
 		int nbTaxis = RunEnvironment.getInstance().getParameters().getInteger("nbTaxis");
 		int nbClients = RunEnvironment.getInstance().getParameters().getInteger("nbClients");
-
+		int pourcentageBabySeat = RunEnvironment.getInstance().getParameters().getInteger("pBabySeat");
+		int pourcentageBaby = RunEnvironment.getInstance().getParameters().getInteger("pBaby");
 		Schedule schedule = new Schedule();
 
 		//grid factory
@@ -41,6 +44,7 @@ public class ContextCreator implements ContextBuilder<Agent> {
 		//placement initial des taxis
 		for (int i = 0; i < nbTaxis; i++) // Taxis placées de manière random
 		{
+			boolean babySeat = (new Random().nextInt()) % 100 + 1 <= pourcentageBabySeat ? true : false;
 			//on tire un endroit aléatoire et on place le taxi dans l'espace continu
 			float xCont = (float) (Math.random() * width);
 			float yCont = (float) (Math.random() * height);
@@ -59,7 +63,7 @@ public class ContextCreator implements ContextBuilder<Agent> {
 			float xCont = (float) (Math.random() * width);
 			float yCont = (float) (Math.random() * height);
 			Coordonnees coord = new Coordonnees(xCont, yCont);
-			Source a = new Source(grid, space);
+			Source a = new Source(grid, space, pourcentageBaby);
 			//Customer a = new Customer(grid, space);
 			//a.setIDclient(i);
 			a.setCoordonnees(coord);

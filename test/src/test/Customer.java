@@ -8,6 +8,7 @@ import repast.simphony.space.grid.Grid;
 public class Customer extends Agent {
 	protected ContinuousSpace<Customer> space;
 	protected Grid<Customer> grid;
+	protected boolean baby;
 	NdPoint dest;
 	int neighbours;
 	int IDclient;
@@ -52,13 +53,14 @@ public class Customer extends Agent {
 		IDclient = iDclient;
 	}
 
-	public Customer(Grid<Agent> grid, ContinuousSpace<Agent> space) {
+	public Customer(Grid<Agent> grid, ContinuousSpace<Agent> space, boolean baby) {
 		super(grid, space);
 		//calculate the destination
 		float xCont = (float) (Math.random() * 50);
 		float yCont = (float) (Math.random() * 50);
 		Coordonnees coord = new Coordonnees(xCont, yCont);
 		setDestination(coord);
+		this.baby = baby;
 	}
 
 	public int getNeighbours() {
@@ -78,25 +80,25 @@ public class Customer extends Agent {
 
 	@Override
 	public void compute() {
-		
-		/*
-		 * every iteration : 
-		 * 0) iteration -- : if 0, ragequit client, not satisfied
-		 * 1) prepare a message with ID-x-y
-		 * 2) shout this message to every taxi with shout (shout++)
-		 *  */
-		
-		satisfaction --;
-		if (satisfaction <= 0)
-		{
+
+		/* every iteration : 0) iteration -- : if 0, ragequit client, not
+		 * satisfied 1) prepare a message with ID-x-y 2) shout this message to
+		 * every taxi with shout (shout++) */
+
+		satisfaction--;
+		if (satisfaction <= 0) {
 			//TODO: client disappears, not satisfied
 		}
-		else
-		{
-			/*String message = IDclient+"_"+coordonnees.getX()+"_"+coordonnees.getY();
-			System.out.println(message);*/
-			shout ++;
+		else {
+			/* String message =
+			 * IDclient+"_"+coordonnees.getX()+"_"+coordonnees.getY();
+			 * System.out.println(message); */
+			shout++;
 		}
+	}
+
+	public boolean hasBaby() {
+		return this.baby;
 	}
 
 }
