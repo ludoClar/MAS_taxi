@@ -69,11 +69,12 @@ public class Taxi extends Agent {
 			int sizeToFill = (int) Math.sqrt(gridSize / nbTaxi);
 			sizeToFill = sizeToFill / 2;
 
-			/*MooreQuery<Agent> query = new MooreQuery<Agent>(grid, this, sizeToFill + 5, sizeToFill + 5);
-			neighboursTaxi = 0;
-			for (Agent o : query.query())
-				if (o instanceof Taxi)
-					neighboursTaxi++;*/
+			
+//			MooreQuery<Agent> query = new MooreQuery<Agent>(grid, this, sizeToFill + 5, sizeToFill + 5);
+//			neighboursTaxi = 0;
+//			for (Agent o : query.query())
+//				if (o instanceof Taxi)
+//					neighboursTaxi++;
 
 			/*query = new MooreQuery<Agent>(grid, this, 24, 24); //TODO: pareil, changer ça par (taillegrid/2)-1
 			for (Agent o : query.query())
@@ -144,8 +145,6 @@ public class Taxi extends Agent {
 			clientSuivi.add(true);
 			minDistReceived.add(10000.0); //on commence avec une très grande valeur pour ne pas perturber les autres
 		}
-		//System.out.println("message reçu!");
-		//System.out.println("coordonnées du client "+ customer.getIDclient() + ": " + customer.getCoordonnees());
 	}
 
 	/* public void moveTo(Customer cust) { Coordonnees coordTaxi = new

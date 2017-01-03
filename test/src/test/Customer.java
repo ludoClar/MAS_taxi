@@ -87,14 +87,14 @@ public class Customer extends Agent {
 		 *  */
 		
 		satisfaction --;
-		if (satisfaction == 0)
+		if (satisfaction <= 0)
 		{
 			//TODO: client disappears, not satisfied
 		}
 		else
 		{
-			String message = IDclient+"_"+coordonnees.getX()+"_"+coordonnees.getY();
-			System.out.println(message);
+			/*String message = IDclient+"_"+coordonnees.getX()+"_"+coordonnees.getY();
+			System.out.println(message);*/
 			shout ++;
 		}
 	}
