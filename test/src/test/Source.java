@@ -29,15 +29,15 @@ public class Source extends Agent {
 
 	}
 
-	@ScheduledMethod(start = 50, interval = 200, priority = 2)
+	@ScheduledMethod(start = 1, interval = 200, priority = 2)
 	public void implement() {
-		System.out.println("In clients créés : ");
+		//System.out.println("In clients créés : ");
 		Customer a = new Customer(grid, space);
 		int satisfaction = (int) ((Math.random() * 50) + 50);
 		a.setIDclient(start + i * step);
 		a.setCoordonnees(this.coordonnees);
 		a.setSatisfaction(satisfaction);
-		System.out.println(a.getCoordonnees());
+		//System.out.println(a.getCoordonnees());
 		//System.out.println("In clients créés : ");
 		Context context = ContextUtils.getContext(this);
 		context.add(a);
