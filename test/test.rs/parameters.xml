@@ -24,6 +24,18 @@
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
 		/>
+				<parameter name="pBabySeat" displayName="pBabySeat" type="int" 
+						defaultValue="50" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									
+		/>
+				<parameter name="pBaby" displayName="pBaby" type="int" 
+						defaultValue="50" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									
+		/>
 		</parameters>
 
 

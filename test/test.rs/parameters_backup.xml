@@ -18,6 +18,18 @@
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
 		/>
+				<parameter name="seuilSatisfaction" displayName="Seuil de satisfaction (en nombre de ticks)" type="int" 
+						defaultValue="500" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									
+		/>
+				<parameter name="pBabySeat" displayName="pBabySeat" type="int" 
+						defaultValue="50" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									
+		/>
 		</parameters>
 
 
