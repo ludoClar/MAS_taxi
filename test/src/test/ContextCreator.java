@@ -63,6 +63,8 @@ public class ContextCreator implements ContextBuilder<Agent> {
 			//Customer a = new Customer(grid, space);
 			//a.setIDclient(i);
 			a.setCoordonnees(coord);
+			a.setStep(nbClients);
+			a.setStart(i);
 			context.add(a);
 			space.moveTo(a, xCont, yCont);
 
