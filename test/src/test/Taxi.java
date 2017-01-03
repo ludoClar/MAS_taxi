@@ -47,14 +47,12 @@ public class Taxi extends Agent {
 
 	// move the car
 	public void compute() {
-		
-		if (!isFree())
-		{
+		System.out.println(clientsPossibles);
+		if (!isFree()) {
 			moveTo(destination);
 		}
-		else
-		{
-			if (memory>0)
+		else {
+			if (memory > 0)
 				memory--;
 			else //quand le timer de la mémoire atteint 0, on l'efface
 			{
@@ -63,7 +61,7 @@ public class Taxi extends Agent {
 				clientSuivi = new ArrayList<Boolean>();
 				minDistReceived = new ArrayList<Double>(); //on met le nombre de base très haut pour que la détection ne soit pas faussée
 			}
-			
+
 			int gridSize = 50 * 50; //TODO: remplacer ça par la taille de la grille
 			int nbTaxi = 4; //TODO: remplacer ça par le paramètre qu'on a rentré
 			int sizeToFill = (int) Math.sqrt(gridSize / nbTaxi);
@@ -80,6 +78,7 @@ public class Taxi extends Agent {
 				if (o instanceof Customer) { //on observe chaque client
 					if (!clientsPossibles.contains(o)) //si on ne le stocke pas deja
 					{
+						System.out.println("in here");
 						clientsPossibles.add((Customer) o); //on le met en mémoire du taxi
 						clientSuivi.add(true);
 						minDistReceived.add(10000.0); //on commence avec une très grande valeur pour ne pas perturber les autres
@@ -87,12 +86,12 @@ public class Taxi extends Agent {
 
 				}
 
-			for (int j = 0; j < clientsPossibles.size(); j++)
-			{
+			for (int j = 0; j < clientsPossibles.size(); j++) {
 				//System.out.println("Client potentiel en vue!");
 				if (clientSuivi.get(j)) {
 					//System.out.println("Ce client est suivi!");
-					Coordonnees coordTaxi = new Coordonnees(space.getLocation(this).getX(), space.getLocation(this).getY());
+					Coordonnees coordTaxi = new Coordonnees(space.getLocation(this).getX(),
+							space.getLocation(this).getY());
 					double distance = clientsPossibles.get(j).getCoordonnees().getDistance(coordTaxi);
 					//System.out.println("Distance taxi-client " + (j+1) + " : "+ distance);
 					int id_client = clientsPossibles.get(j).getIDclient();
@@ -105,8 +104,6 @@ public class Taxi extends Agent {
 						setPreparedMessage(message);
 						watched++; //on envoie le message
 
-						
-						
 						//commence à se déplacer, ne fait plus rien d'autre
 						moveTo(clientsPossibles.get(j));
 						return;
@@ -187,28 +184,27 @@ public class Taxi extends Agent {
 				minDistReceived = new ArrayList<Double>();
 			}
 		}
-		/*else {
-			//move to the destination
-			//TODO: faire disparaitre client du dessin
-
-			NdPoint myPoint = space.getLocation(this);
-			NdPoint otherPoint = new NdPoint(destination.getX(), destination.getY());
-			//System.out.println(otherPoint.toString());
-
-			double angle = SpatialMath.calcAngleFor2DMovement(space, myPoint, otherPoint);
-			//déplacemement
-			space.moveByVector(this, 0.1, angle, 0); //on se déplace dans l'espace
-			grid.moveTo(this, (int) space.getLocation(this).getX(), (int) space.getLocation(this).getY()); //on recopie ce déplacement dans la grille
-
-			//check if the ride is over
-			distance = space.getDistance(myPoint, otherPoint);
-			if (distance < 0.5)
-				free = true;
-			System.out.println("else | distance=" + distance + " | free=" + free);
-		}*/
+		/* else { //move to the destination //TODO: faire disparaitre client du
+		 * dessin
+		 * 
+		 * NdPoint myPoint = space.getLocation(this); NdPoint otherPoint = new
+		 * NdPoint(destination.getX(), destination.getY());
+		 * //System.out.println(otherPoint.toString());
+		 * 
+		 * double angle = SpatialMath.calcAngleFor2DMovement(space, myPoint,
+		 * otherPoint); //déplacemement space.moveByVector(this, 0.1, angle, 0);
+		 * //on se déplace dans l'espace grid.moveTo(this, (int)
+		 * space.getLocation(this).getX(), (int)
+		 * space.getLocation(this).getY()); //on recopie ce déplacement dans la
+		 * grille
+		 * 
+		 * //check if the ride is over distance = space.getDistance(myPoint,
+		 * otherPoint); if (distance < 0.5) free = true;
+		 * System.out.println("else | distance=" + distance + " | free=" +
+		 * free); } */
 
 	}
-	
+
 	public void moveTo(Coordonnees coordonnes) {
 		Coordonnees coordTaxi = new Coordonnees(space.getLocation(this).getX(), space.getLocation(this).getY());
 		double distance = coordonnes.getDistance(coordTaxi); //on calcule la distance par rapport au client
@@ -231,13 +227,13 @@ public class Taxi extends Agent {
 
 	@Override
 	public void implement() {
-		
+
 	}
 
 	public boolean isFree() {
 		return this.free;
 	}
-	
+
 	//taux d'erreur ~5% avec la mémoire nettoyé, attention à ne pas avoir une mémoire trop fréquemment nettoyée
 	//un taxi allait droit sur un client, sans raison il a sauté de cible, et le premier taxi s'est fait abandonner tout le long de la simulation
 }
