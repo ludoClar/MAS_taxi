@@ -125,12 +125,12 @@ public class Taxi extends Agent {
 
 	//TODO: revoir la fonction distance
 	public void compute() {
-
 		if (!isFree()) {
 			moveTo(destination);
 		}
 		else {
 			if (memory > 0)
+
 				memory--;
 			else //quand le timer de la mémoire atteint 0, on l'efface
 			{
@@ -141,17 +141,17 @@ public class Taxi extends Agent {
 			}
 
 			/* pour tout client, calculer la distance et la stocker dans un
-			 * array de double, meme i que les autres listes  OK
+			 * array de double, meme i que les autres listes OK
 			 * 
 			 * choseClient() : on prend le i de la distance la plus petite
 			 * suivie on compare la distance de ce i avec la distance recue par
 			 * les autres si calc<recu on y va on annonce aux autre la distance
 			 * que l'on doit faire return si calc>recu on suit plus ce client là
 			 * on relance choseClient() return */
-			
+
 			ArrayList<Double> distCalc = new ArrayList<Double>();
-			for (int i = 0 ; i < clientsPossibles.size();i++)
-			{
+			System.out.println("clPossibles.size() ==>" + clientsPossibles.size());
+			for (int i = 0; i < clientsPossibles.size(); i++) {
 				Coordonnees coordTaxi = new Coordonnees(space.getLocation(this).getX(), space.getLocation(this).getY());
 				double distance = clientsPossibles.get(i).getCoordonnees().getDistance(coordTaxi);
 				distCalc.add(distance); //on créée une liste de la distance du client à chaque client
@@ -159,27 +159,25 @@ public class Taxi extends Agent {
 			choseClient(distCalc);
 		}
 	}
-	
-	public void choseClient(ArrayList<Double> distCalc){
-		 /*on prend le i de la distance la plus petite
-		 * suivie on compare la distance de ce i avec la distance recue par
-		 * les autres si calc<recu on y va on annonce aux autre la distance
-		 * que l'on doit faire return si calc>recu on suit plus ce client là
-		 * on relance choseClient() return */
-		
+
+	public void choseClient(ArrayList<Double> distCalc) {
+		/* on prend le i de la distance la plus petite suivie on compare la
+		 * distance de ce i avec la distance recue par les autres si calc<recu
+		 * on y va on annonce aux autre la distance que l'on doit faire return
+		 * si calc>recu on suit plus ce client là on relance choseClient()
+		 * return */
+
 		//1) find the i of the nearest client
 		double min = 10000;
 		int i = -1;
-		for (int j =0 ; j<distCalc.size();j++)
-		{
-			if (distCalc.get(j)<min && clientSuivi.get(j))
-			{
+		for (int j = 0; j < distCalc.size(); j++) {
+			if (distCalc.get(j) < min && clientSuivi.get(j)) {
 				min = distCalc.get(j);
 				i = j;
 			}
 		}
-		
-		if (i!=-1) //if no client exists, error
+
+		if (i != -1) //if no client exists, error
 		{
 			//2) compare the distance to the client @ i with the distance received by other taxis
 			if (min <= minDistReceived.get(i)) //if the calculating taxi is closer than the other one
@@ -189,16 +187,16 @@ public class Taxi extends Agent {
 				setPreparedMessage(message);
 				watched++; //on envoie le message
 				moveTo(clientsPossibles.get(i));
+
 				return;
 			}
-			else
-			{ //stop following this client, start choseClient() again
+			else { //stop following this client, start choseClient() again
 				clientSuivi.set(i, false);
 				choseClient(distCalc);
 				return;
 			}
 		}
-		
+
 	}
 
 	@Watch(watcheeClassName = "test.Taxi", watcheeFieldNames = "watched", whenToTrigger = WatcherTriggerSchedule.IMMEDIATE)
@@ -225,6 +223,20 @@ public class Taxi extends Agent {
 			clientsPossibles.add(customer); //on le met en mémoire du taxi
 			clientSuivi.add(true);
 			minDistReceived.add(10000.0); //on commence avec une très grande valeur pour ne pas perturber les autres
+		}
+	}
+
+	@Watch(watcheeClassName = "test.Customer", watcheeFieldNames = "quit", whenToTrigger = WatcherTriggerSchedule.IMMEDIATE)
+	public void removeCustomer(Customer customer) {
+		if (clientsPossibles.contains(customer)) //si on ne le stocke pas deja
+		{
+			for (int i = 0; i < clientsPossibles.size(); i++) {
+				if (clientsPossibles.get(i).equals(customer)) {
+					clientsPossibles.remove(i); //on le met en mémoire du taxi
+					clientSuivi.remove(i);
+					minDistReceived.remove(i); //on commence avec une très grande valeur pour ne pas perturber les autres
+				}
+			}
 		}
 	}
 
@@ -269,8 +281,7 @@ public class Taxi extends Agent {
 	 * 
 	 * //TODO: nettoyer la liste taxis les plus proches des clients //flush
 	 * lists? clientsPossibles = new ArrayList<Customer>(); clientSuivi = new
-	 * ArrayList<Boolean>(); minDistReceived = new ArrayList<Double>(); } }
-	 * } */
+	 * ArrayList<Boolean>(); minDistReceived = new ArrayList<Double>(); } } } */
 
 	public void moveTo(Customer cust) {
 		Coordonnees coordTaxi = new Coordonnees(space.getLocation(this).getX(), space.getLocation(this).getY());

@@ -1,9 +1,11 @@
 package test;
 
+import repast.simphony.context.Context;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.space.grid.Grid;
+import repast.simphony.util.ContextUtils;
 
 public class Customer extends Agent {
 	protected ContinuousSpace<Customer> space;
@@ -16,6 +18,7 @@ public class Customer extends Agent {
 	Coordonnees destination;
 	int satisfaction = 0;
 	int shout = 0;
+	boolean quit = false;
 
 	/* public Customer(Grid<Customer> grid,ContinuousSpace<Customer> space) {
 	 * this.space = space; this.grid = grid; lastCalc = 0; dest = new NdPoint(0,
@@ -84,10 +87,11 @@ public class Customer extends Agent {
 		/* every iteration : 0) iteration -- : if 0, ragequit client, not
 		 * satisfied 1) prepare a message with ID-x-y 2) shout this message to
 		 * every taxi with shout (shout++) */
-
 		satisfaction--;
 		if (satisfaction <= 0) {
-			//TODO: client disappears, not satisfied
+			quit = true;
+			Context context = ContextUtils.getContext(this);
+			context.remove(this);
 		}
 		else {
 			/* String message =

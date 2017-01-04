@@ -35,9 +35,8 @@ public class Source extends Agent {
 	@ScheduledMethod(start = 1, interval = 200, priority = 2)
 	public void implement() {
 		boolean baby = (new Random().nextInt()) % 100 + 1 <= pourcentageBaby ? true : false;
-		System.out.println("In clients créés : ");
 		Customer a = new Customer(grid, space, baby);
-		int satisfaction = (int) ((Math.random() * 50) + 50);
+		int satisfaction = (int) ((Math.random() * 250) + 50);
 		a.setIDclient(start + i * step);
 		a.setCoordonnees(this.coordonnees);
 		a.setSatisfaction(satisfaction);
