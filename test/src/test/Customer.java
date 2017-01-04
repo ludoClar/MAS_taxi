@@ -18,6 +18,7 @@ public class Customer extends Agent {
 	Coordonnees destination;
 	int satisfaction = 0;
 	int shout = 0;
+	Source originSource;
 	boolean quit = false;
 
 	/* public Customer(Grid<Customer> grid,ContinuousSpace<Customer> space) {
@@ -56,6 +57,14 @@ public class Customer extends Agent {
 		IDclient = iDclient;
 	}
 
+	public Source getOriginSource() {
+		return originSource;
+	}
+
+	public void setOriginSource(Source originSource) {
+		this.originSource = originSource;
+	}
+
 	public Customer(Grid<Agent> grid, ContinuousSpace<Agent> space, boolean baby) {
 		super(grid, space);
 		//calculate the destination
@@ -90,6 +99,7 @@ public class Customer extends Agent {
 		satisfaction--;
 		if (satisfaction <= 0) {
 			quit = true;
+			originSource.unhappyClient();
 			Context context = ContextUtils.getContext(this);
 			context.remove(this);
 		}
@@ -100,6 +110,8 @@ public class Customer extends Agent {
 			shout++;
 		}
 	}
+	
+	public void happyClient(){originSource.happyClient();};
 
 	public boolean hasBaby() {
 		return this.baby;

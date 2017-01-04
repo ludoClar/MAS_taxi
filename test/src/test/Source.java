@@ -12,9 +12,11 @@ public class Source extends Agent {
 	protected Coordonnees coordonnees;
 	protected int pourcentageBaby;
 	protected int nextClient;
-	int i = 0;
-	int step = 0;
-	int start = 0;
+	protected int i = 0;
+	protected int step = 0;
+	protected int start = 0;
+	protected int happyClients = 0;
+	protected int angryClients = 0;
 
 	public void setStep(int step) {
 		this.step = step;
@@ -30,7 +32,14 @@ public class Source extends Agent {
 	}
 
 	public void compute() {
-
+		if (nextClient == 10) //we only display the message when a client is about to spawn
+		{
+			float ratio = -1;
+			int total = happyClients + angryClients;
+			if (total != 0)
+				ratio = (float)happyClients / total;
+			System.out.println("Ratio from the source " + start + ": " + ratio);
+		}
 	}
 
 	@ScheduledMethod(start = 1, interval = 1, priority = 2)
@@ -45,6 +54,7 @@ public class Source extends Agent {
 			a.setIDclient(start + i * step);
 			a.setCoordonnees(this.coordonnees);
 			a.setSatisfaction(satisfaction);
+			a.setOriginSource(this);
 			//System.out.println(a.getCoordonnees());
 			//System.out.println("In clients créés : ");
 			Context context = ContextUtils.getContext(this);
@@ -57,4 +67,8 @@ public class Source extends Agent {
 	public void setCoordonnees(Coordonnees coordonnees) {
 		this.coordonnees = coordonnees;
 	}
+	
+	public void happyClient(){happyClients++;};
+	
+	public void unhappyClient(){angryClients++;};
 }
