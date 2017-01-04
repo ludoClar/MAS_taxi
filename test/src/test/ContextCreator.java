@@ -39,7 +39,7 @@ public class ContextCreator implements ContextBuilder<Agent> {
 		//space factory
 		ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);
 		ContinuousSpace<Agent> space = spaceFactory.createContinuousSpace("space", context,
-				new RandomCartesianAdder<Agent>(), new repast.simphony.space.continuous.WrapAroundBorders(), 50, 50);
+				new RandomCartesianAdder<Agent>(), new repast.simphony.space.continuous.StrictBorders(), 50, 50);
 
 		//placement initial des taxis
 		for (int i = 0; i < nbTaxis; i++) // Taxis placées de manière random
