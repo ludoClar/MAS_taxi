@@ -42,9 +42,10 @@ public class Source extends Agent {
 		}
 	}
 
+	/*--------------CLIENT CREATION-----------------*/
 	@ScheduledMethod(start = 1, interval = 1, priority = 2)
 	public void implement() {
-		if (nextClient > 0)
+		if (nextClient > 0) //even if this function is started at each tick, we don't want a client to appear every tick
 			nextClient--;
 		else {
 			nextClient = new Random().nextInt() % 10 + 350;
@@ -55,8 +56,6 @@ public class Source extends Agent {
 			a.setCoordonnees(this.coordonnees);
 			a.setSatisfaction(satisfaction);
 			a.setOriginSource(this);
-			//System.out.println(a.getCoordonnees());
-			//System.out.println("In clients créés : ");
 			Context context = ContextUtils.getContext(this);
 			context.add(a);
 			space.moveTo(a, coordonnees.getX(), coordonnees.getY());

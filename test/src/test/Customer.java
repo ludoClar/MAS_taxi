@@ -21,10 +21,8 @@ public class Customer extends Agent {
 	Source originSource;
 	boolean quit = false;
 
-	/* public Customer(Grid<Customer> grid,ContinuousSpace<Customer> space) {
-	 * this.space = space; this.grid = grid; lastCalc = 0; dest = new NdPoint(0,
-	 * 0); neighbours = 0; } */
 
+	/*--------------GETTERS AND SETTERS-----------------*/
 	public int getSatisfaction() {
 		return satisfaction;
 	}
@@ -67,7 +65,7 @@ public class Customer extends Agent {
 
 	public Customer(Grid<Agent> grid, ContinuousSpace<Agent> space, boolean baby) {
 		super(grid, space);
-		//calculate the destination
+		//find a random destination
 		float xCont = (float) (Math.random() * 50);
 		float yCont = (float) (Math.random() * 50);
 		Coordonnees coord = new Coordonnees(xCont, yCont);
@@ -79,23 +77,12 @@ public class Customer extends Agent {
 		return neighbours;
 	}
 
-	/* // move the car
-	 * 
-	 * @ScheduledMethod(start = 1, interval = 30, priority = 2) public void
-	 * compute() { boolean newCustomer = (new Random().nextInt() % 2 == 0 ? true
-	 * : false); if (newCustomer) { Customer = new Customer(); } } */
-
-	// create complementary type of agent
 	@ScheduledMethod(start = 1, interval = 1, priority = 1)
 	public void implement() {
 	}
 
 	@Override
 	public void compute() {
-
-		/* every iteration : 0) iteration -- : if 0, ragequit client, not
-		 * satisfied 1) prepare a message with ID-x-y 2) shout this message to
-		 * every taxi with shout (shout++) */
 		satisfaction--;
 		if (satisfaction <= 0) {
 			quit = true;
@@ -103,10 +90,7 @@ public class Customer extends Agent {
 			Context context = ContextUtils.getContext(this);
 			context.remove(this);
 		}
-		else {
-			/* String message =
-			 * IDclient+"_"+coordonnees.getX()+"_"+coordonnees.getY();
-			 * System.out.println(message); */
+		else { //the client shout for a taxi
 			shout++;
 		}
 	}
