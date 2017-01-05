@@ -93,20 +93,28 @@ public class Taxi extends Agent {
 		}
 		else //si le taxi ne trouve pas de client
 		{
-			if (attente != null && recalc > 0)
+			if (attente!=null)
 			{
-				moveTo(attente);
-				recalc --;
+				Coordonnees coordTaxi = new Coordonnees(space.getLocation(this).getX(), space.getLocation(this).getY());
+				double distance = attente.getDistance(coordTaxi);
+				if (recalc > 0 && distance > .5)
+				{
+					moveTo(attente);
+					recalc --;
+				}
+				else
+				{
+					attente = null;
+				}				
 			}
 			else
 			{
 				recalc = 150;
 				float x = (float) (Math.random() * 48)+1;
-				float y = (float) (Math.random() * 48)+1;
+				float y = (float) (Math.random() * 48)+1;	
 				this.attente = new Coordonnees(x, y);
 				moveTo(attente);
 			}
-
 		}
 
 	}
