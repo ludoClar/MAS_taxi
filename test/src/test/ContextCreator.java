@@ -29,6 +29,8 @@ public class ContextCreator implements ContextBuilder<Agent> {
 		int nbSources = RunEnvironment.getInstance().getParameters().getInteger("nbClients");
 		int pourcentageBabySeat = RunEnvironment.getInstance().getParameters().getInteger("pBabySeat");
 		int pourcentageBaby = RunEnvironment.getInstance().getParameters().getInteger("pBaby");
+		int satisfactionMin = RunEnvironment.getInstance().getParameters().getInteger("satisfactionMin");
+		int satisfactionStep = RunEnvironment.getInstance().getParameters().getInteger("satisfactionStep");
 		Schedule schedule = new Schedule();
 
 		/*--------------GRID FACTORY CREATION-----------------*/
@@ -64,7 +66,7 @@ public class ContextCreator implements ContextBuilder<Agent> {
 			float xCont = (float) (Math.random() * width);
 			float yCont = (float) (Math.random() * height);
 			Coordonnees coord = new Coordonnees(xCont, yCont);
-			Source a = new Source(grid, space, pourcentageBaby);
+			Source a = new Source(grid, space, pourcentageBaby, satisfactionMin, satisfactionStep);
 			a.setCoordonnees(coord);
 			a.setStep(nbSources);
 			a.setStart(i);

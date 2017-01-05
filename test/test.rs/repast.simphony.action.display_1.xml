@@ -3,6 +3,10 @@
   <type>2D</type>
   <styles>
     <entry>
+      <string>test.Source</string>
+      <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
+    </entry>
+    <entry>
       <string>test.Customer</string>
       <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
     </entry>
@@ -12,6 +16,10 @@
     </entry>
   </styles>
   <editedStyles>
+    <entry>
+      <string>test.Source</string>
+      <string>test.Source.style_0.xml</string>
+    </entry>
     <entry>
       <string>test.Customer</string>
       <string>test.Customer.style_4.xml</string>
@@ -31,19 +39,23 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-461368330</hashCode>
+    <hashCode>-186420428</hashCode>
   </schedParams>
   <layoutClassName>foo.bar.baz</layoutClassName>
   <layoutProjection>space</layoutProjection>
   <layoutInterval>0</layoutInterval>
   <layerOrder>
     <entry>
-      <string>test.Customer</string>
+      <string>test.Source</string>
       <int>0</int>
     </entry>
     <entry>
-      <string>test.Taxi</string>
+      <string>test.Customer</string>
       <int>1</int>
+    </entry>
+    <entry>
+      <string>test.Taxi</string>
+      <int>2</int>
     </entry>
   </layerOrder>
   <projections>

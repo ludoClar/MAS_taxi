@@ -14,8 +14,8 @@ public abstract class Agent {
 	protected NdPoint dest;
 	protected int neighboursTaxi;
 	protected int neighboursClients;
-	protected final int SEUIL_SATISFACTION_MAX = RunEnvironment.getInstance().getParameters()
-			.getInteger("seuilSatisfaction");
+//	protected final int SEUIL_SATISFACTION_MAX = RunEnvironment.getInstance().getParameters()
+//			.getInteger("seuilSatisfaction");
 
 	public Agent(Grid<Agent> grid, ContinuousSpace<Agent> space) {
 		this.space = space;

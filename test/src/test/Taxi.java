@@ -20,6 +20,8 @@ public class Taxi extends Agent {
 	String preparedMessage;
 	ArrayList<Double> minDistReceived;
 	Coordonnees destination;
+	Coordonnees attente;
+	int recalc;
 	boolean free;
 
 	public Taxi(Grid<Agent> grid, ContinuousSpace<Agent> space, boolean babySeat) {
@@ -32,6 +34,8 @@ public class Taxi extends Agent {
 		destination = null;
 		free = true;
 		this.babySeat = babySeat;
+		this.attente = null;
+		recalc = 150;
 	}
 
 	public String getPreparedMessage() {
@@ -86,6 +90,23 @@ public class Taxi extends Agent {
 				choseClient(distCalc);
 				return;
 			}
+		}
+		else //si le taxi ne trouve pas de client
+		{
+			if (attente != null && recalc > 0)
+			{
+				moveTo(attente);
+				recalc --;
+			}
+			else
+			{
+				recalc = 150;
+				float x = (float) (Math.random() * 48)+1;
+				float y = (float) (Math.random() * 48)+1;
+				this.attente = new Coordonnees(x, y);
+				moveTo(attente);
+			}
+
 		}
 
 	}
@@ -146,6 +167,7 @@ public class Taxi extends Agent {
 		}
 		else {
 			free = false;
+			attente = null;
 			destination = cust.getdestination();
 			Context context = ContextUtils.getContext(this);
 			cust.happyClient(); //we tell the client he's happy

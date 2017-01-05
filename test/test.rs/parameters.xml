@@ -6,6 +6,12 @@
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
 		/>
+				<parameter name="satisfactionMin" displayName="Satisfaction Minimale" type="int" 
+						defaultValue="500" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									
+		/>
 				<parameter name="nbTaxis" displayName="Nombre de taxis" type="int" 
 						defaultValue="5" 
 						isReadOnly="false" 
@@ -18,8 +24,8 @@
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
 		/>
-				<parameter name="seuilSatisfaction" displayName="Seuil de satisfaction (en nombre de ticks)" type="int" 
-						defaultValue="500" 
+				<parameter name="satisfactionStep" displayName="Satisfaction Step" type="int" 
+						defaultValue="200" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									

@@ -17,6 +17,8 @@ public class Source extends Agent {
 	protected int start = 0;
 	protected int happyClients = 0;
 	protected int angryClients = 0;
+	protected int satisfactionMin = 0;
+	protected int satisfactionStep = 0;
 
 	public void setStep(int step) {
 		this.step = step;
@@ -26,9 +28,11 @@ public class Source extends Agent {
 		this.start = start;
 	}
 
-	public Source(Grid<Agent> grid, ContinuousSpace<Agent> space, int pourcentageBaby) {
+	public Source(Grid<Agent> grid, ContinuousSpace<Agent> space, int pourcentageBaby, int satisfactionMin, int satisfactionStep) {
 		super(grid, space);
 		this.pourcentageBaby = pourcentageBaby;
+		this.satisfactionMin = satisfactionMin;
+		this.satisfactionStep = satisfactionStep;
 	}
 
 	public void compute() {
@@ -51,10 +55,10 @@ public class Source extends Agent {
 			nextClient = new Random().nextInt() % 10 + 350;
 			boolean baby = (new Random().nextInt()) % 100 + 1 <= pourcentageBaby ? true : false;
 			Customer a = new Customer(grid, space, baby);
-			int satisfaction = (int) ((Math.random() * 250) + 50);
+			int randSatisfaction = (int) ((Math.random() * satisfactionStep) + satisfactionMin);
 			a.setIDclient(start + i * step);
 			a.setCoordonnees(this.coordonnees);
-			a.setSatisfaction(satisfaction);
+			a.setSatisfaction(randSatisfaction);
 			a.setOriginSource(this);
 			Context context = ContextUtils.getContext(this);
 			context.add(a);
