@@ -10,7 +10,7 @@ public class AgentStyle2D extends DefaultStyleOGL2D {
 		if (o instanceof Taxi) {
 			if (((Taxi) o).isFree())
 				if (((Taxi) o).hasBabySeat())
-					return Color.ORANGE;
+					return Color.BLUE;
 				else
 					return Color.GREEN;
 			else

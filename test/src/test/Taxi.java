@@ -13,16 +13,16 @@ import repast.simphony.util.ContextUtils;
 
 public class Taxi extends Agent {
 
-	ArrayList<Customer> clientsPossibles;
-	ArrayList<Boolean> clientSuivi;
+	protected ArrayList<Customer> clientsPossibles;
+	protected ArrayList<Boolean> clientSuivi;
 	protected boolean babySeat;
-	int watched;
-	String preparedMessage;
-	ArrayList<Double> minDistReceived;
-	Coordonnees destination;
-	Coordonnees attente;
-	int recalc;
-	boolean free;
+	protected int watched;
+	protected String preparedMessage;
+	protected ArrayList<Double> minDistReceived;
+	protected Coordonnees destination;
+	protected Coordonnees attente;
+	protected int recalc;
+	protected boolean free;
 
 	public Taxi(Grid<Agent> grid, ContinuousSpace<Agent> space, boolean babySeat) {
 		super(grid, space);
@@ -47,24 +47,24 @@ public class Taxi extends Agent {
 	}
 
 	public void compute() {
-		
+
 		if (!isFree()) {
 			moveTo(destination);
 		}
 		else {
 			ArrayList<Double> distCalc = new ArrayList<Double>();
-			for (int i = 0; i < clientsPossibles.size(); i++) 
-			{
+			for (int i = 0; i < clientsPossibles.size(); i++) {
 				Coordonnees coordTaxi = new Coordonnees(space.getLocation(this).getX(), space.getLocation(this).getY());
-				double distance = clientsPossibles.get(i).getCoordonnees().getDistance(coordTaxi);
-				distCalc.add(distance); //on créée une liste de la distance du client à chaque client
+				if (babySeat || !clientsPossibles.get(i).hasBaby()) { // Si le taxi a un siege bebe ou que le client n'a pas de bebe on ajoute
+					double distance = clientsPossibles.get(i).getCoordonnees().getDistance(coordTaxi);
+					distCalc.add(distance); //on créée une liste de la distance du taxi à chaque client
+				}
 			}
 			choseClient(distCalc);
 		}
 	}
 
 	public void choseClient(ArrayList<Double> distCalc) {
-		
 		double min = 10000;
 		int i = -1;
 		for (int j = 0; j < distCalc.size(); j++) {
@@ -82,7 +82,6 @@ public class Taxi extends Agent {
 				setPreparedMessage(message);
 				watched++;
 				moveTo(clientsPossibles.get(i));
-
 				return;
 			}
 			else { //stop following this client, start choseClient() again
@@ -93,25 +92,21 @@ public class Taxi extends Agent {
 		}
 		else //si le taxi ne trouve pas de client
 		{
-			if (attente!=null)
-			{
+			if (attente != null) {
 				Coordonnees coordTaxi = new Coordonnees(space.getLocation(this).getX(), space.getLocation(this).getY());
 				double distance = attente.getDistance(coordTaxi);
-				if (recalc > 0 && distance > .5)
-				{
+				if (recalc > 0 && distance > .5) {
 					moveTo(attente);
-					recalc --;
+					recalc--;
 				}
-				else
-				{
+				else {
 					attente = null;
-				}				
+				}
 			}
-			else
-			{
+			else {
 				recalc = 150;
-				float x = (float) (Math.random() * 48)+1;
-				float y = (float) (Math.random() * 48)+1;	
+				float x = (float) (Math.random() * 48) + 1;
+				float y = (float) (Math.random() * 48) + 1;
 				this.attente = new Coordonnees(x, y);
 				moveTo(attente);
 			}
@@ -126,8 +121,7 @@ public class Taxi extends Agent {
 		double dist = Double.parseDouble(info[1]);
 		for (int i = 0; i < clientsPossibles.size(); i++) {
 			if (clientsPossibles.get(i).getIDclient() == id_client) {
-				if (dist < minDistReceived.get(i))
-				{
+				if (dist < minDistReceived.get(i)) {
 					minDistReceived.set(i, dist);
 				}
 			}
@@ -136,9 +130,8 @@ public class Taxi extends Agent {
 
 	@Watch(watcheeClassName = "test.Customer", watcheeFieldNames = "shout", whenToTrigger = WatcherTriggerSchedule.IMMEDIATE)
 	public void getCustomer(Customer customer) {
-		if (!clientsPossibles.contains(customer)) 
-		{
-			clientsPossibles.add(customer); 
+		if (!clientsPossibles.contains(customer)) {
+			clientsPossibles.add(customer);
 			clientSuivi.add(true);
 			minDistReceived.add(10000.0); //very high number to be sure any calculated/received distance will be lower
 		}
@@ -146,11 +139,10 @@ public class Taxi extends Agent {
 
 	@Watch(watcheeClassName = "test.Customer", watcheeFieldNames = "quit", whenToTrigger = WatcherTriggerSchedule.IMMEDIATE)
 	public void removeCustomer(Customer customer) {
-		if (clientsPossibles.contains(customer))
-		{
+		if (clientsPossibles.contains(customer)) {
 			for (int i = 0; i < clientsPossibles.size(); i++) {
 				if (clientsPossibles.get(i).equals(customer)) {
-					clientsPossibles.remove(i); 
+					clientsPossibles.remove(i);
 					clientSuivi.remove(i);
 					minDistReceived.remove(i);
 				}
@@ -158,8 +150,11 @@ public class Taxi extends Agent {
 		}
 	}
 
+	//TODO Remove
+	public static int count = 0;
+
 	public void moveTo(Customer cust) {
-		
+
 		Coordonnees coordTaxi = new Coordonnees(space.getLocation(this).getX(), space.getLocation(this).getY());
 		double distance = cust.getCoordonnees().getDistance(coordTaxi); //on calcule la distance par rapport au client
 
@@ -167,11 +162,18 @@ public class Taxi extends Agent {
 			//move to the customer
 			NdPoint myPoint = space.getLocation(this);
 			NdPoint otherPoint = space.getLocation(cust);
+			double angle = 0D;
+			System.out.println(cust.getCoordonnees() + "baby?" + cust.hasBaby());
+			if (cust != null && otherPoint != null) {
 
-			double angle = SpatialMath.calcAngleFor2DMovement(space, myPoint, otherPoint);
-			//déplacemement
-			space.moveByVector(this, 0.1, angle, 0); //on se déplace dans l'espace
-			grid.moveTo(this, (int) space.getLocation(this).getX(), (int) space.getLocation(this).getY()); //on recopie ce déplacement dans la grille	
+				System.out.println("sp:" + space + " mp" + myPoint + " op " + otherPoint);
+				angle = SpatialMath.calcAngleFor2DMovement(space, myPoint, otherPoint);
+				//déplacemement
+				space.moveByVector(this, 0.1, angle, 0); //on se déplace dans l'espace
+				grid.moveTo(this, (int) space.getLocation(this).getX(), (int) space.getLocation(this).getY()); //on recopie ce déplacement dans la grille	
+			}
+			else if (otherPoint == null)
+				System.out.println("Nb fois que c'est nul : " + ++count);
 		}
 		else {
 			free = false;
@@ -216,9 +218,8 @@ public class Taxi extends Agent {
 	public boolean hasBabySeat() {
 		return this.babySeat;
 	}
-	
-	public void eraseMemory()
-	{
+
+	public void eraseMemory() {
 		clientsPossibles = new ArrayList<Customer>();
 		clientSuivi = new ArrayList<Boolean>();
 		minDistReceived = new ArrayList<Double>();

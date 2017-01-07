@@ -19,7 +19,7 @@ import repast.simphony.space.grid.WrapAroundBorders;
 
 public class ContextCreator implements ContextBuilder<Agent> {
 
-	Context<Agent> context;
+	protected Context<Agent> context;
 
 	@Override
 	public Context build(Context<Agent> context) {
@@ -44,9 +44,8 @@ public class ContextCreator implements ContextBuilder<Agent> {
 				new RandomCartesianAdder<Agent>(), new repast.simphony.space.continuous.StrictBorders(), 50, 50);
 
 		/*--------------TAXIS CREATION-----------------*/
-		for (int i = 0; i < nbTaxis; i++)
-		{
-			boolean babySeat = (new Random().nextInt()) % 100 + 1 <= pourcentageBabySeat ? true : false;
+		for (int i = 0; i < nbTaxis; i++) {
+			boolean babySeat = (Math.abs(new Random().nextInt())) % 100 + 1 <= pourcentageBabySeat ? true : false;
 			//taxi starts at a random place
 			float xCont = (float) (Math.random() * width);
 			float yCont = (float) (Math.random() * height);

@@ -11,16 +11,15 @@ public class Customer extends Agent {
 	protected ContinuousSpace<Customer> space;
 	protected Grid<Customer> grid;
 	protected boolean baby;
-	NdPoint dest;
-	int neighbours;
-	int IDclient;
-	Coordonnees coordonnees;
-	Coordonnees destination;
-	int satisfaction = 0;
-	int shout = 0;
-	Source originSource;
-	boolean quit = false;
-
+	protected NdPoint dest;
+	protected int neighbours;
+	protected int IDclient;
+	protected Coordonnees coordonnees;
+	protected Coordonnees destination;
+	protected int satisfaction = 0;
+	protected int shout = 0;
+	protected Source originSource;
+	protected boolean quit = false;
 
 	/*--------------GETTERS AND SETTERS-----------------*/
 	public int getSatisfaction() {
@@ -94,8 +93,10 @@ public class Customer extends Agent {
 			shout++;
 		}
 	}
-	
-	public void happyClient(){originSource.happyClient();};
+
+	public void happyClient() {
+		originSource.happyClient();
+	};
 
 	public boolean hasBaby() {
 		return this.baby;
