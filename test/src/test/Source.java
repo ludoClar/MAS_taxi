@@ -52,6 +52,7 @@ public class Source extends Agent {
 	}
 
 	/*--------------CLIENT CREATION-----------------*/
+	
 	@ScheduledMethod(start = 1, interval = 1, priority = 2)
 	public void implement() {
 		if (nextClient > 0) //even if this function is started at each tick, we don't want a client to appear every tick
@@ -61,7 +62,25 @@ public class Source extends Agent {
 			boolean baby = (new Random().nextInt()) % 100 + 1 <= pourcentageBaby ? true : false;
 			Customer a = new Customer(grid, space, baby);
 			int randSatisfaction = (int) ((Math.random() * satisfactionStep) + satisfactionMin);
+			int sourceDest = (int) ((Math.random() * step));
+			System.out.println("nb de sources checkée : " + sourceDest);
+			Coordonnees destination = new Coordonnees(1,1);
+			System.out.println("Début de Moore");
+			MooreQuery<Agent> query = new MooreQuery<Agent>(grid, this, 100, 100);
+			for (Agent o : query.query())
+				if (o instanceof Source && sourceDest != -1 && o!=this) { //on observe chaque source
+					System.out.println("Source detectée");
+					if (sourceDest==0)
+					{
+						System.out.println("Destination choisie");
+						 destination = ((Source) o).getCoordonnees();
+						 sourceDest = -1;
+					}
+					else
+						sourceDest--;
+				}
 			a.setIDclient(start + i * step);
+			a.setDestination(destination);
 			a.setCoordonnees(this.coordonnees);
 			a.setSatisfaction(randSatisfaction);
 			a.setOriginSource(this);
@@ -71,39 +90,6 @@ public class Source extends Agent {
 			i++;
 		}
 	}
-	
-//	@ScheduledMethod(start = 1, interval = 1, priority = 2)
-//	public void implement() {
-//		if (nextClient > 0) //even if this function is started at each tick, we don't want a client to appear every tick
-//			nextClient--;
-//		else {
-//			nextClient = new Random().nextInt() % 10 + 350;
-//			boolean baby = (new Random().nextInt()) % 100 + 1 <= pourcentageBaby ? true : false;
-//			Customer a = new Customer(grid, space, baby);
-//			int randSatisfaction = (int) ((Math.random() * satisfactionStep) + satisfactionMin);
-//			int sourceDest = (int) ((Math.random() * step));
-//			Coordonnees coord = new Coordonnees(0, 0);
-//			MooreQuery<Agent> query = new MooreQuery<Agent>(grid, this, 24, 24);
-//			for (Agent o : query.query())
-//				if (o instanceof Source) { //on observe chaque source
-//					if (sourceDest>0)
-//					{
-//						 coord = ((Source) o).getCoordonnees();
-//					}
-//					else
-//						sourceDest--;
-//				}
-//			a.setIDclient(start + i * step);
-//			a.setCoordonnees(coord);
-//			a.setSatisfaction(randSatisfaction);
-//			a.setOriginSource(this);
-//			Context context = ContextUtils.getContext(this);
-//			context.add(a);
-//			space.moveTo(a, coordonnees.getX(), coordonnees.getY());
-//			i++;
-//		}
-//	}
-
 
 	public void setCoordonnees(Coordonnees coordonnees) {
 		this.coordonnees = coordonnees;
