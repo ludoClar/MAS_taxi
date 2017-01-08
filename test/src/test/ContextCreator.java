@@ -9,7 +9,6 @@ import repast.simphony.context.space.grid.GridFactory;
 import repast.simphony.context.space.grid.GridFactoryFinder;
 import repast.simphony.dataLoader.ContextBuilder;
 import repast.simphony.engine.environment.RunEnvironment;
-import repast.simphony.engine.schedule.Schedule;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.RandomCartesianAdder;
 import repast.simphony.space.grid.Grid;
@@ -17,33 +16,42 @@ import repast.simphony.space.grid.GridBuilderParameters;
 import repast.simphony.space.grid.SimpleGridAdder;
 import repast.simphony.space.grid.WrapAroundBorders;
 
+/* ==========================================================================
+ * 																			*
+ * Nom de la classe : ContextCreator										*
+ * 																			*
+ * Classe qui gère la création de la grille, puis de l'espace continu,		*
+ * puis la remplit avec les taxis et les sources.							*
+ * 																			*
+ ===========================================================================*/
+
 public class ContextCreator implements ContextBuilder<Agent> {
 
 	protected Context<Agent> context;
 
+	/*--------------CONSTRUCTEUR-----------------*/
 	@Override
-	public Context build(Context<Agent> context) {
-		int height = 50;//= RunEnvironment.getInstance().getParameters().getInteger("spaceHeight");
-		int width = 50; //RunEnvironment.getInstance().getParameters().getInteger("spaceWidth");
+	public Context<Agent> build(Context<Agent> context) {
+		int height = 50;
+		int width = 50; 
 		int nbTaxis = RunEnvironment.getInstance().getParameters().getInteger("nbTaxis");
 		int nbSources = RunEnvironment.getInstance().getParameters().getInteger("nbClients");
 		int pourcentageBabySeat = RunEnvironment.getInstance().getParameters().getInteger("pBabySeat");
 		int pourcentageBaby = RunEnvironment.getInstance().getParameters().getInteger("pBaby");
 		int satisfactionMin = RunEnvironment.getInstance().getParameters().getInteger("satisfactionMin");
 		int satisfactionStep = RunEnvironment.getInstance().getParameters().getInteger("satisfactionStep");
-		Schedule schedule = new Schedule();
-
-		/*--------------GRID FACTORY CREATION-----------------*/
+		
+		/*--------------CREATION DE LA GRILLE-----------------*/
 		GridFactory gridFactory = GridFactoryFinder.createGridFactory(null);
 		Grid<Agent> grid = gridFactory.createGrid("grid", context,
 				new GridBuilderParameters<Agent>(new WrapAroundBorders(), new SimpleGridAdder<Agent>(), false, 50, 50));
 
-		/*-------------- CONTINUOUS SPACE FACTORY CREATION-----------------*/
+		/*-------------- CREATION DE L'ESPACE CONTINU-----------------*/
 		ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);
 		ContinuousSpace<Agent> space = spaceFactory.createContinuousSpace("space", context,
 				new RandomCartesianAdder<Agent>(), new repast.simphony.space.continuous.StrictBorders(), 50, 50);
 
-		/*--------------TAXIS CREATION-----------------*/
+		/*--------------CREATION DES TAXIS-----------------*/
 		for (int i = 0; i < nbTaxis; i++) {
 			boolean babySeat = (Math.abs(new Random().nextInt())) % 100 + 1 <= pourcentageBabySeat ? true : false;
 			//taxi starts at a random place
@@ -59,7 +67,7 @@ public class ContextCreator implements ContextBuilder<Agent> {
 			grid.moveTo(a, xGrid, yGrid);
 		}
 
-		/*--------------SOURCES CREATION-----------------*/
+		/*--------------CREATION DES SOURCES-----------------*/
 		for (int i = 0; i < nbSources; i++) //fait apparaitre clients au début
 		{
 			float xCont = (float) (Math.random() * width);

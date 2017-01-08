@@ -7,12 +7,23 @@ import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.space.grid.Grid;
 import repast.simphony.util.ContextUtils;
 
+/* ==========================================================================
+ * 																			*
+ * Nom de la classe : Customer												*
+ * 																			*
+ * Classe qui permet de représenter les clients.							*
+ * Gère la dégradation de leur satisfaction, quand ils prennent la décision	*
+ * d'arreter d'attendre. Gère aussi la création et l'envoi des différents	*
+ * messages à la destination des taxis (requête de prise en charge et 		*
+ * annonce du départ du client).										 	*
+ * 																			*
+ ===========================================================================*/
+
 public class Customer extends Agent {
 	protected ContinuousSpace<Customer> space;
 	protected Grid<Customer> grid;
 	protected boolean baby;
 	protected NdPoint dest;
-	protected int neighbours;
 	protected int IDclient;
 	protected Coordonnees coordonnees;
 	protected Coordonnees destination;
@@ -21,7 +32,7 @@ public class Customer extends Agent {
 	protected Source originSource;
 	protected boolean quit = false;
 
-	/*--------------GETTERS AND SETTERS-----------------*/
+	/*--------------GETTERS ET SETTERS-----------------*/
 	public int getSatisfaction() {
 		return satisfaction;
 	}
@@ -62,6 +73,7 @@ public class Customer extends Agent {
 		this.originSource = originSource;
 	}
 
+	/*--------------CONSTRUCTEUR-----------------*/
 	public Customer(Grid<Agent> grid, ContinuousSpace<Agent> space, boolean baby) {
 		super(grid, space);
 		//find a random destination
@@ -72,14 +84,23 @@ public class Customer extends Agent {
 		this.baby = baby;
 	}
 
-	public int getNeighbours() {
-		return neighbours;
-	}
-
-	@ScheduledMethod(start = 1, interval = 1, priority = 1)
-	public void implement() {
-	}
-
+	/*--------------FONCTIONS-----------------*/
+	
+	
+	/* ==========================================================================
+	 * 																			*
+	 * Nom de la fonction : compute()											*
+	 * 																			*
+	 * Entrée : aucune															*
+	 * Sortie : aucune															*
+	 * 																			*
+	 * Cette fonction est lancée à chaque tick pour chaque client. Elle permet  *
+	 * de décider de ce qu'il va faire : s'il continue d'attendre parce qu'il a	*
+	 * encore de la patience, dans ce cas là il va demander d'etre pris en 		*
+	 * charge. S'il n'a plus de patience, il annonce son départ, annonce à la 	*
+	 * source qu'il n'est pas satisfait, puis disparaît.						*
+	 * 																			*
+	 ===========================================================================*/
 	@Override
 	public void compute() {
 		satisfaction--;
