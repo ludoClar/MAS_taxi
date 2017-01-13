@@ -3,7 +3,6 @@ package test;
 import java.util.Random;
 
 import repast.simphony.context.Context;
-import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.query.space.grid.MooreQuery;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.grid.Grid;
@@ -34,9 +33,11 @@ public class Source extends Agent {
 	// 
 	protected int satisfactionStep = 0;
 	protected int nextClient;
-	protected int i = 0;
+	
+	
+	protected int idClient = 0;
 	protected int step = 0;
-	protected int start = 0;
+	protected int idSource = 0;
 	protected int happyClients = 0;
 	protected int angryClients = 0;
 
@@ -50,7 +51,7 @@ public class Source extends Agent {
 	}
 
 	public void setStart(int start) {
-		this.start = start;
+		this.idSource = start;
 	}
 	
 	public void setCoordonnees(Coordonnees coordonnees) {
@@ -64,6 +65,11 @@ public class Source extends Agent {
 	public void unhappyClient() {
 		angryClients++;
 	};
+	
+	public int getId()
+	{
+		return this.idSource;
+	}
 	
 	public float getRatio()
 	{
@@ -111,7 +117,7 @@ public class Source extends Agent {
 			int total = happyClients + angryClients;
 			if (total != 0)
 				ratio = (float) happyClients / total;
-			System.out.println("Ratio from the source " + start + ": " + ratio);
+			System.out.println("Ratio from the source " + idSource + ": " + ratio);
 		}
 		if (nextClient > 0) //compute() est lancée à chaque tick, mais on ne veut pas que un client apparaisse à chaque tick.
 			nextClient--;
@@ -122,19 +128,21 @@ public class Source extends Agent {
 			boolean baby = (Math.abs(new Random().nextInt())) % 100 + 1 <= pourcentageBaby ? true : false;
 			Customer a = new Customer(grid, space, baby);
 			int randSatisfaction = (int) ((Math.random() * satisfactionStep) + satisfactionMin);
-			int sourceDest = (int) ((Math.random() * step));
-			Coordonnees destination = new Coordonnees(1, 1);
+			
+			int sourceDest = idSource;
+			while (sourceDest == idSource)
+				sourceDest = Math.abs(new Random().nextInt() % step);
+
+			Coordonnees destination = null;
 			MooreQuery<Agent> query = new MooreQuery<Agent>(grid, this, 100, 100);
-			for (Agent o : query.query())
-				if (o instanceof Source && sourceDest != -1 && o != this) { //on observe chaque source
-					if (sourceDest == 0) {
-						destination = ((Source) o).getCoordonnees();
-						sourceDest = -1;
-					}
-					else
-						sourceDest--;
-				}
-			a.setIDclient(start + i * step);
+
+			for (Agent agent : query.query())
+			{
+				if (agent instanceof Source && agent != this) //on observe chaque source
+					if (sourceDest == ((Source) agent).getId())
+						destination = ((Source) agent).getCoordonnees();
+			}
+			a.setIDclient(idSource + idClient * step);
 			a.setDestination(destination);
 			a.setCoordonnees(this.coordonnees);
 			a.setSatisfaction(randSatisfaction);
@@ -142,7 +150,7 @@ public class Source extends Agent {
 			Context<Agent> context = ContextUtils.getContext(this);
 			context.add(a);
 			space.moveTo(a, coordonnees.getX(), coordonnees.getY());
-			i++;
+			idClient++;
 		}
 	}
 
