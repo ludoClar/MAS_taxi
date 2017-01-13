@@ -21,16 +21,24 @@ import repast.simphony.util.ContextUtils;
  ===========================================================================*/
 
 public class Source extends Agent {
+	
+	// Stocke les coordonnees de la source
 	protected Coordonnees coordonnees;
+	
+	// Pourcentage de clients crees par la source qui auront un bebe
 	protected int pourcentageBaby;
+	
+	// Temps (en nombre de ticks) minimal pour satisfaire les clients
+	protected int satisfactionMin = 0;
+	
+	// 
+	protected int satisfactionStep = 0;
 	protected int nextClient;
 	protected int i = 0;
 	protected int step = 0;
 	protected int start = 0;
 	protected int happyClients = 0;
 	protected int angryClients = 0;
-	protected int satisfactionMin = 0;
-	protected int satisfactionStep = 0;
 
 	/*--------------GETTERS ET SETTERS-----------------*/
 	public void setStep(int step) {
@@ -56,7 +64,20 @@ public class Source extends Agent {
 	public void unhappyClient() {
 		angryClients++;
 	};
+	
+	public float getRatio()
+	{
+		if((happyClients+angryClients) != 0)
+			return (happyClients/(angryClients+happyClients));
+		else
+			return 0f;
+	}
 
+	public int getAngryClients()
+	{
+		return angryClients;
+	}
+	
 	/*--------------CONSTRUCTEUR-----------------*/
 	public Source(Grid<Agent> grid, ContinuousSpace<Agent> space, int pourcentageBaby, int satisfactionMin,
 			int satisfactionStep) {
