@@ -148,10 +148,11 @@ public class Taxi extends Agent {
 				}
 			}
 			else {
-				recalc = 150;
+				recalc = 75;
 				float x = (float) (Math.random() * 48) + 1;
 				float y = (float) (Math.random() * 48) + 1;
 				this.attente = new Coordonnees(x, y);
+				eraseMemory();
 				moveTo(attente);
 			}
 		}
@@ -232,7 +233,7 @@ public class Taxi extends Agent {
 		Coordonnees coordTaxi = new Coordonnees(space.getLocation(this).getX(), space.getLocation(this).getY());
 		double distance = cust.getCoordonnees().getDistance(coordTaxi); //on calcule la distance par rapport au client
 
-		if (distance > 0.5) {
+		if (distance > 0.2) {
 			free = true;
 			//si on est encore loin, on se dirige vers la destination
 			NdPoint myPoint = space.getLocation(this);
