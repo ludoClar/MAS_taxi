@@ -6,38 +6,44 @@
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
 		/>
-				<parameter name="satisfactionMin" displayName="Satisfaction Minimale" type="int" 
-						defaultValue="500" 
+				<parameter name="nbSources" displayName="Nombre de sources (minimum 2)" type="int" 
+						defaultValue="100" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
 		/>
 				<parameter name="nbTaxis" displayName="Nombre de taxis" type="int" 
-						defaultValue="5" 
+						defaultValue="120" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
 		/>
-				<parameter name="nbClients" displayName="Nombre de clients" type="int" 
-						defaultValue="10" 
-						isReadOnly="false" 
-						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
-									
-		/>
-				<parameter name="satisfactionStep" displayName="Satisfaction Step" type="int" 
+		<parameter name="satisfactionMin" displayName="Seuil de satisfaction minimal avant que le client parte" type="int" 
 						defaultValue="200" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
 		/>
-				<parameter name="pBabySeat" displayName="pBabySeat" type="int" 
-						defaultValue="50" 
+				<parameter name="satisfactionStep" displayName="Marge de satisfaction (Satisfaction max = satisfaction min + marge)" type="int" 
+						defaultValue="300" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
 		/>
-				<parameter name="pBaby" displayName="pBaby" type="int" 
-						defaultValue="50" 
+				<parameter name="pBabySeat" displayName="Pourcentage de taxis ayant des sieges bebes" type="int" 
+						defaultValue="0" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									
+		/>
+				<parameter name="pBaby" displayName="Pourcentage de clients ayant des bebes" type="int" 
+						defaultValue="0" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									
+		/>
+		<parameter name="freqApparition" displayName="Nombre de ticks pour l'apparition des clients +/- 100 (105 minimal)" type="int" 
+						defaultValue="250" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									

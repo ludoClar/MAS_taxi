@@ -33,14 +33,29 @@ public class ContextCreator implements ContextBuilder<Agent> {
 	@Override
 	public Context<Agent> build(Context<Agent> context) {
 		int height = 50;
-		int width = 50; 
+		int width = 50;
+
+		// Nombre de taxis
 		int nbTaxis = RunEnvironment.getInstance().getParameters().getInteger("nbTaxis");
-		int nbSources = RunEnvironment.getInstance().getParameters().getInteger("nbClients");
+
+		// Nombre de sources
+		int nbSources = RunEnvironment.getInstance().getParameters().getInteger("nbSources");
+
+		// Pourcentage des taxis qui ont des sieges bebe
 		int pourcentageBabySeat = RunEnvironment.getInstance().getParameters().getInteger("pBabySeat");
+
+		// Pourcentage des clients qui ont des bebes
 		int pourcentageBaby = RunEnvironment.getInstance().getParameters().getInteger("pBaby");
+
+		// Seuil de satisfaction minimal que le client a avant de partir (min + nombre aleatoire)
 		int satisfactionMin = RunEnvironment.getInstance().getParameters().getInteger("satisfactionMin");
+
+		// Marge de satisfaction telle que (satisfactionMax=satisfactionStep+satisfactionMin)
 		int satisfactionStep = RunEnvironment.getInstance().getParameters().getInteger("satisfactionStep");
-		
+
+		// Frequence d'apparition des clients (en nombre de ticks)
+		int freqApparitionClient = RunEnvironment.getInstance().getParameters().getInteger("freqApparition");
+
 		/*--------------CREATION DE LA GRILLE-----------------*/
 		GridFactory gridFactory = GridFactoryFinder.createGridFactory(null);
 		Grid<Agent> grid = gridFactory.createGrid("grid", context,
@@ -53,7 +68,7 @@ public class ContextCreator implements ContextBuilder<Agent> {
 
 		/*--------------CREATION DES TAXIS-----------------*/
 		for (int i = 0; i < nbTaxis; i++) {
-			boolean babySeat = (Math.abs(new Random().nextInt())) % 100 + 1 <= pourcentageBabySeat ? true : false;
+			boolean babySeat = (Math.abs(new Random().nextInt()) % 100) < pourcentageBabySeat ? true : false;
 			//taxi starts at a random place
 			float xCont = (float) (Math.random() * width);
 			float yCont = (float) (Math.random() * height);
@@ -73,7 +88,8 @@ public class ContextCreator implements ContextBuilder<Agent> {
 			float xCont = (float) (Math.random() * width);
 			float yCont = (float) (Math.random() * height);
 			Coordonnees coord = new Coordonnees(xCont, yCont);
-			Source a = new Source(grid, space, pourcentageBaby, satisfactionMin, satisfactionStep);
+			Source a = new Source(grid, space, pourcentageBaby, satisfactionMin, satisfactionStep,
+					freqApparitionClient);
 			a.setCoordonnees(coord);
 			a.setStep(nbSources);
 			a.setStart(i);

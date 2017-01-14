@@ -24,16 +24,32 @@ import repast.simphony.util.ContextUtils;
 
 public class Taxi extends Agent {
 
+	// Liste pour stocker les clients possibles
 	protected ArrayList<Customer> clientsPossibles;
+
+	// Liste qui stocke les clients suivis
 	protected ArrayList<Boolean> clientSuivi;
-	protected boolean babySeat;
+
+	// Liste pour choisir les clients en fonction de leur distance
+	protected ArrayList<Double> minDistReceived;
+
 	protected int watched;
 	protected String preparedMessage;
-	protected ArrayList<Double> minDistReceived;
-	protected Coordonnees destination;
-	protected Coordonnees attente;
-	protected int recalc;
+
+	// Coordonnees de destinations lorsqu'un client est monté
+	protected Coordonnees coordDestination;
+
+	// Coordonnees de destinations lorsqu'on attent un client
+	protected Coordonnees coordAttente;
+
+	// La duree entre 2 changements de directions quand le taxi attend
+	protected int dureeChangementDirection;
+
+	// Booleen pour savoir si le taxi esst occupe ou non 
 	protected boolean free;
+
+	// Booleen pour savoir si le taxi dispose d'un siege bebe
+	protected boolean babySeat;
 
 	/*--------------GETTERS ET SETTERS-----------------*/
 	public String getPreparedMessage() {
@@ -61,11 +77,11 @@ public class Taxi extends Agent {
 		//on met le nombre de base très haut pour que la détection ne soit pas faussée
 		watched = 0;
 		preparedMessage = "";
-		destination = null;
-		free = true;
+		coordDestination = null;
+		free = true; // Au commencement, le taxi est libre
 		this.babySeat = babySeat;
-		this.attente = null;
-		recalc = 150; //la durée entre deux changements de direction pour se balader
+		this.coordAttente = null;
+		dureeChangementDirection = 150; //la durée entre deux changements de direction pour se balader
 	}
 
 	/*--------------FONCTIONS-----------------*/
@@ -79,11 +95,9 @@ public class Taxi extends Agent {
 	 * == */
 	public void compute() {
 		if (!isFree()) {
-			System.out.println(this + " occupe -> " + destination);
-			moveTo(destination); //si le taxi est occupé, il se contente d'aller vers sa destination.
+			moveTo(coordDestination); //si le taxi est occupé, il se contente d'aller vers sa destination.
 		}
 		else { //s'il est vide, il calcule sa distance avec tous les clients et décide de se diriger vers le plus proche.
-			System.err.println(this + " libre -> " + destination);
 			ArrayList<Double> distCalc = new ArrayList<Double>();
 			for (int i = 0; i < clientsPossibles.size(); i++) {
 				Coordonnees coordTaxi = new Coordonnees(space.getLocation(this).getX(), space.getLocation(this).getY());
@@ -136,24 +150,24 @@ public class Taxi extends Agent {
 		else //si le taxi ne trouve pas de client
 		{
 			//il se dirige vers un point aléatoire pendant 150 ticks ou jusqu'a ce qu'il soit à moins de .5 de ce point, à ce moment il décide d'un autre point.
-			if (attente != null) {
+			if (coordAttente != null) {
 				Coordonnees coordTaxi = new Coordonnees(space.getLocation(this).getX(), space.getLocation(this).getY());
-				double distance = attente.getDistance(coordTaxi);
-				if (recalc > 0 && distance > .5) {
-					moveTo(attente);
-					recalc--;
+				double distance = coordAttente.getDistance(coordTaxi);
+				if (dureeChangementDirection > 0 && distance > .5) {
+					moveTo(coordAttente);
+					dureeChangementDirection--;
 				}
 				else {
-					attente = null;
+					coordAttente = null;
 				}
 			}
-			else {
-				recalc = 75;
+			else { // On met a jour le point aleatoire
+				dureeChangementDirection = 75;
 				float x = (float) (Math.random() * 48) + 1;
 				float y = (float) (Math.random() * 48) + 1;
-				this.attente = new Coordonnees(x, y);
-				eraseMemory();
-				moveTo(attente);
+				this.coordAttente = new Coordonnees(x, y);
+				eraseMemory(); // On vide la memoire
+				moveTo(coordAttente); // Le taxi se deplace vers les nouvelles coordonnees d'attentes 
 			}
 		}
 
@@ -248,8 +262,8 @@ public class Taxi extends Agent {
 		}
 		else { //si on est arrivé au client
 			free = false; //le taxi est maintenant occupé
-			attente = null; //il n'a plus besoin d'aller vers un point aléatoire
-			destination = cust.getdestination();
+			coordAttente = null; //il n'a plus besoin d'aller vers un point aléatoire
+			coordDestination = cust.getdestination();
 			Context context = ContextUtils.getContext(this);
 			cust.happyClient(); //on annonce au client qu'il est bien pris en charge, pour qu'il le transmette a sa source d'origine
 			context.remove(cust); //on supprime le client
@@ -284,7 +298,7 @@ public class Taxi extends Agent {
 		if (distance < 0.5) {
 			free = true;
 			// TODO Remove if problem
-			attente = null;
+			coordAttente = null;
 		}
 	}
 
