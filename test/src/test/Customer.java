@@ -95,15 +95,19 @@ public class Customer extends Agent {
 
 	/*--------------FONCTIONS-----------------*/
 
-	/* =========================================================================
-	 * = * Nom de la fonction : compute() * * Entrée : aucune * Sortie : aucune
-	 * * * Cette fonction est lancée à chaque tick pour chaque client. Elle
-	 * permet * de décider de ce qu'il va faire : s'il continue d'attendre parce
-	 * qu'il a * encore de la patience, dans ce cas là il va demander d'etre
-	 * pris en * charge. S'il n'a plus de patience, il annonce son départ,
-	 * annonce à la * source qu'il n'est pas satisfait, puis disparaît. * *
-	 * =========================================================================
-	 * == */
+
+	/* ==============================================================================
+	 * Nom de la fonction : compute()												*
+	 * 																				*
+	 * Entrée : aucune																*
+	 * Sortie : aucune																*
+	 *																				*
+	 * Cette fonction est lancée à chaque tick pour chaque client. Elle permet de 	*
+	 * décider de ce qu'il va faire : s'il continue d'attendre parce qu'il a encore *
+	 * de la patience, dans ce cas là il va demander d'etre pris en charge. S'il 	*
+	 * n'a plus de patience, il annonce son départ, annonce à la source qu'il n'est *
+	 * pas satisfait, puis disparaît.												*
+	 * =============================================================================*/
 	@Override
 	public void compute() {
 		satisfaction--;

@@ -86,13 +86,16 @@ public class Taxi extends Agent {
 
 	/*--------------FONCTIONS-----------------*/
 
-	/* =========================================================================
-	 * = * Nom de la fonction : compute() * * Entrée : aucune * Sortie : aucune
-	 * * * Cette fonction est lancée à chaque tick pour chaque taxi. Elle permet
-	 * de * savoir ce qu'il va faire : s'il se dirige vers un client ou s'il se
-	 * * balade en attendant un client qu'il pourra prendre en charge * *
-	 * =========================================================================
-	 * == */
+	/* ==============================================================================
+	 * Nom de la fonction : compute() 												*
+	 * 																				* 
+	 * Entrée : aucune 																*
+	 * Sortie : aucune																*
+	 * 																				*
+	 * Cette fonction est lancée à chaque tick pour chaque taxi. Elle permet de		*
+	 * savoir ce qu'il va faire : s'il se dirige vers un client ou s'il se			*
+	 * balade en attendant un client qu'il pourra prendre en charge					*
+	 * =============================================================================*/
 	public void compute() {
 		if (!isFree()) {
 			moveTo(coordDestination); //si le taxi est occupé, il se contente d'aller vers sa destination.
@@ -111,16 +114,18 @@ public class Taxi extends Agent {
 		}
 	}
 
-	/* =========================================================================
-	 * = * Nom de la fonction : choseClient() * * * Entrée : une liste de double
-	 * représentant les distances entre le taxi * et tous les clients
-	 * intéressants * Sortie : aucune * * Cette fonction est lancée par
-	 * compute() et permet de prendre les * décisions : vers quel client ou quel
-	 * point aléatoire se diriger. * Il s'agit d'une fonction séparée de
-	 * compute() car elle est récursive : * si le client le plus proche n'est
-	 * pas satisfaisant, on passe au suivant. * *
-	 * =========================================================================
-	 * == */
+	/* ==============================================================================
+	 * Nom de la fonction : choseClient()											*
+	 * 																				*
+	 * Entrée : une liste de double	représentant les distances entre le taxi et 	*
+	 * tous les clients intéressants  												*
+	 * Sortie : aucune																*
+	 *																				*
+	 * Cette fonction est lancée par compute() et permet de prendre les décisions : *
+	 * vers quel client ou quel point aléatoire se diriger. Il s'agit d'une fonction*
+	 * séparée de compute() car elle est récursive : si le client le plus proche 	*
+	 * n'est  pas satisfaisant, on passe au suivant. 								*
+	 * =============================================================================*/
 	public void choseClient(ArrayList<Double> distCalc) {
 		double min = 10000;
 		int i = -1;
@@ -173,15 +178,17 @@ public class Taxi extends Agent {
 
 	}
 
-	/* =========================================================================
-	 * = * Nom de la fonction : changeDistanceReceived() * * Entrée : le taxi
-	 * qui vient d'annoncer un message * Sortie : aucune * * Cette fonction est
-	 * lancée quand un autre taxi annonce un message * (quand il incrémente sa
-	 * variable watched), le taxi qui récupère le * message va alors récupérer
-	 * les informations qu'il contient et mettre ses * données à jour sur la
-	 * distance qui sépare le taxi annoncant et le client * dont il parle * *
-	 * =========================================================================
-	 * == */
+	/* ==============================================================================
+	 * Nom de la fonction : changeDistanceReceived()								*
+	 * 																				*
+	 * Entrée : le taxi qui vient d'annoncer un message  							*
+	 * Sortie : aucune																*
+	 *																				*
+	 * Cette fonction est lancée quand un autre taxi annonce un message (quand il 	*
+	 * incrémente sa variable watched), le taxi qui récupère le message va alors 	*
+	 * récupérer les informations qu'il contient et mettre ses * données à jour sur *
+	 * la distance qui sépare le taxi annoncant et le client * dont il parle 		*
+	 * =============================================================================*/
 	@Watch(watcheeClassName = "test.Taxi", watcheeFieldNames = "watched", whenToTrigger = WatcherTriggerSchedule.IMMEDIATE)
 	public void changeDistanceReceived(Taxi taxi) {
 		String[] info = taxi.getPreparedMessage().split("_");
@@ -196,15 +203,18 @@ public class Taxi extends Agent {
 		}
 	}
 
-	/* =========================================================================
-	 * = * Nom de la fonction : getCustomer() * * Entrée : le client qui annonce
-	 * sa présence * Sortie : aucune * * Cette fonction est lancée quand un
-	 * client annonce sa présence * (quand il incrémente sa variable shout), le
-	 * taxi qui récupère le * message va alors récupérer l'instance du client,
-	 * et s'il ne le contient * pas déjà, l'ajoute à sa liste de clients
-	 * potentiels. * *
-	 * =========================================================================
-	 * == */
+
+	/* ==============================================================================
+	 * Nom de la fonction : getCustomer()											*
+	 * 																				*
+	 * Entrée : le client qui annonce sa présence  									*
+	 * Sortie : aucune																*
+	 *																				*
+	 * Cette fonction est lancée quand un client annonce sa présence (quand il 		*
+	 * incrémente sa variable shout), le taxi qui récupère le message va alors 		*
+	 * récupérer l'instance du client, et s'il ne le contient pas déjà, l'ajoute 	*
+	 * à sa liste de clients potentiels												*
+	 * =============================================================================*/
 	@Watch(watcheeClassName = "test.Customer", watcheeFieldNames = "shout", whenToTrigger = WatcherTriggerSchedule.IMMEDIATE)
 	public void getCustomer(Customer customer) {
 		if (!clientsPossibles.contains(customer)) {
@@ -214,14 +224,17 @@ public class Taxi extends Agent {
 		}
 	}
 
-	/* =========================================================================
-	 * = * Nom de la fonction : removeCustomer() * * Entrée : le client qui
-	 * annonce son départ * Sortie : aucune * * Cette fonction est lancée quand
-	 * un client annonce son départ * (quand il change sa variable quit), le
-	 * taxi qui récupère le * message va alors récupérer l'instance du client,
-	 * et s'il le contient * toujours, va le supprimer de ses listes. * *
-	 * =========================================================================
-	 * == */
+	/* ==============================================================================
+	 * Nom de la fonction : removeCustomer()										*
+	 * 																				*
+	 * Entrée : le client qui annonce son départ  									*
+	 * Sortie : aucune																*
+	 *																				*
+	 * Cette fonction est lancée quand un client annonce son départ (quand il 		*
+	 * change sa variable quit), le taxi qui récupère le message va alors récupérer	*
+	 * l'instance du client, et s'il le contient toujours, va le supprimer de ses 	*
+	 * listes.																		*
+	 * =============================================================================*/
 	@Watch(watcheeClassName = "test.Customer", watcheeFieldNames = "quit", whenToTrigger = WatcherTriggerSchedule.IMMEDIATE)
 	public void removeCustomer(Customer customer) {
 		if (clientsPossibles.contains(customer)) {
@@ -235,13 +248,16 @@ public class Taxi extends Agent {
 		}
 	}
 
-	/* =========================================================================
-	 * = * Nom de la fonction : moveTo() * * Entrée : le client vers lequel on
-	 * se dirige * Sortie : aucune * * Cette fonction permet de se diriger vers
-	 * un client, et une fois qu'on * est arrivé à au cleint, elle permet
-	 * d'annoncer que le client a bien * été pris en charge. * *
-	 * =========================================================================
-	 * == */
+	/* ==============================================================================
+	 * Nom de la fonction : moveTo()												*
+	 * 																				*
+	 * Entrée : le client vers lequel on se dirige									*
+	 * Sortie : aucune																*
+	 *																				*
+	 * Cette fonction permet de se diriger vers un client, et une fois qu'on est 	*
+	 * arrivé à au cleint, elle permet d'annoncer que le client a bien été pris 	*
+	 * en charge.																	*
+	 * =============================================================================*/
 	public void moveTo(Customer cust) {
 
 		Coordonnees coordTaxi = new Coordonnees(space.getLocation(this).getX(), space.getLocation(this).getY());
@@ -273,14 +289,16 @@ public class Taxi extends Agent {
 		}
 	}
 
-	/* =========================================================================
-	 * = * Nom de la fonction : moveTo() * * Entrée : les coordonnées vers
-	 * lesquelles on se dirige * Sortie : aucune * * Cette fonction permet de se
-	 * diriger vers un point, symbolisé par un * objet Coordonnes. Une fois
-	 * qu'on est arrivés a destination, le taxi * se met en mode libre et peut
-	 * donc commencer à chercher un client. * *
-	 * =========================================================================
-	 * == */
+	/* ==============================================================================
+	 * Nom de la fonction : moveTo()												*
+	 * 																				*
+	 * Entrée : les coordonnées vers lesquelles on se dirige						*
+	 * Sortie : aucune																*
+	 *																				*
+	 * Cette fonction permet de se diriger vers un point, symbolisé par un objet 	*
+	 * Coordonnes. Une fois qu'on est arrivés a destination, le taxi se met en mode	*
+	 *  libre et peut donc commencer à chercher un client.							*
+	 * =============================================================================*/
 	public void moveTo(Coordonnees coordonnes) {
 		Coordonnees coordTaxi = new Coordonnees(space.getLocation(this).getX(), space.getLocation(this).getY());
 		double distance = coordonnes.getDistance(coordTaxi); //on calcule la distance de la destination par rapport au taxi
@@ -301,13 +319,15 @@ public class Taxi extends Agent {
 			coordAttente = null;
 		}
 	}
-
-	/* =========================================================================
-	 * = * Nom de la fonction : eraseMemory() * * Entrée : aucune * Sortie :
-	 * aucune * * Cette fonction efface toutes les listes servant de mémoire au
-	 * taxi. * *
-	 * =========================================================================
-	 * == */
+ 
+	/* ==============================================================================
+	 * Nom de la fonction : eraseMemory()											*
+	 * 																				*
+	 * Entrée : aucune																*
+	 * Sortie : aucune																*
+	 *																				*
+	 * Cette fonction efface toutes les listes servant de mémoire au taxi.			*
+	 * =============================================================================*/
 	public void eraseMemory() {
 		clientsPossibles = new ArrayList<Customer>();
 		clientSuivi = new ArrayList<Boolean>();

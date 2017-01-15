@@ -97,13 +97,16 @@ public class Source extends Agent {
 
 	/*--------------FONCTIONS-----------------*/
 
-	/* =========================================================================
-	 * = * Nom de la fonction : compute() * * Entrée : aucune * Sortie : aucune
-	 * * * Cette fonction est lancée à chaque tick pour chaque source. Elle
-	 * permet * de savoir ce qu'elle va faire : créer un client, annoncer sa *
-	 * satisfaction ou rien du tout. * *
-	 * =========================================================================
-	 * == */
+	/* ==============================================================================
+	 * Nom de la fonction : compute()												*
+	 * 																				*
+	 * Entrée : aucune																*
+	 * Sortie : aucune																*
+	 *																				*
+	 * Cette fonction est lancée à chaque tick pour chaque source. Elle permet de 	*
+	 * savoir ce qu'elle va faire : créer un client, annoncer sa  satisfaction ou	* 
+	 * rien du tout.																*
+	 * =============================================================================*/
 	public void compute() {
 
 		/*--------------ANNONCE DE LA SATISFACTION-----------------*/
