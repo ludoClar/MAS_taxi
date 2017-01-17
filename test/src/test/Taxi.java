@@ -104,12 +104,13 @@ public class Taxi extends Agent {
 			ArrayList<Double> distCalc = new ArrayList<Double>();
 			for (int i = 0; i < clientsPossibles.size(); i++) {
 				Coordonnees coordTaxi = new Coordonnees(space.getLocation(this).getX(), space.getLocation(this).getY());
-				if (babySeat || !clientsPossibles.get(i).hasBaby()) { // Si le taxi a un siège bébé ou que le client n'a pas de bébé on l'ajoute à la liste des clients possibles
+				if (!(!babySeat && clientsPossibles.get(i).hasBaby())) { // Si le taxi a un siège bébé ou que le client n'a pas de bébé on l'ajoute à la liste des clients possibles
 					//le but est d'éviter que les taxis sans siège bébé suivent les clients qui en ont besoin d'un.
 					double distance = clientsPossibles.get(i).getCoordonnees().getDistance(coordTaxi);
 					distCalc.add(distance); //on créée une liste de la distance du taxi à chaque client
 				}
 			}
+
 			choseClient(distCalc);
 		}
 	}
@@ -313,10 +314,8 @@ public class Taxi extends Agent {
 
 		//on regarde si on est arrivés à destination
 		distance = space.getDistance(myPoint, otherPoint);
-		if (distance < 0.5) {
+		if (distance <= 0.19) {
 			free = true;
-			// TODO Remove if problem
-			coordAttente = null;
 		}
 	}
  
