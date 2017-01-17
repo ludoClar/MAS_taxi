@@ -80,11 +80,17 @@ public class Source extends Agent {
 	// Retourne le ratio de la source
 	public float getRatio() {
 		if ((happyClients + angryClients) != 0)
-			return (happyClients / (angryClients + happyClients));
+			return (((float)happyClients) / ((float)(angryClients + happyClients)));
 		else
 			return 0f;
 	}
-
+	
+	public String getPercentageSatisfaction()
+	{
+		int percentage = (int)(getRatio()*100);
+		return percentage + "%";
+	}
+	
 	/*--------------CONSTRUCTEUR-----------------*/
 	public Source(Grid<Agent> grid, ContinuousSpace<Agent> space, int pourcentageBaby, int satisfactionMin,
 			int satisfactionStep, int freqApparClients) {

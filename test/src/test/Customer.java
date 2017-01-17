@@ -33,7 +33,7 @@ public class Customer extends Agent {
 	protected int satisfaction = 0;
 
 	// Lorsque le cleitn appelle les taxis
-	protected int shout = 0;
+	protected boolean shout = true;
 
 	// Le client est rattaché a sa source d'origine
 	protected Source originSource;
@@ -118,7 +118,7 @@ public class Customer extends Agent {
 			context.remove(this);
 		}
 		else { //the client shout for a taxi
-			shout++;
+			shout = !shout;
 		}
 	}
 

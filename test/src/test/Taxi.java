@@ -33,7 +33,7 @@ public class Taxi extends Agent {
 	// Liste pour choisir les clients en fonction de leur distance
 	protected ArrayList<Double> minDistReceived;
 
-	protected int watched;
+	protected boolean watched;
 	protected String preparedMessage;
 
 	// Coordonnees de destinations lorsqu'un client est monté
@@ -75,7 +75,7 @@ public class Taxi extends Agent {
 		clientSuivi = new ArrayList<Boolean>(); //cette liste permet de savoir si le client est toujours suivi, c'est à dire si aucun autre taxi n'a annoncé être plus proche de lui
 		minDistReceived = new ArrayList<Double>(); //cette liste permet de suive la distance minimale reçue entre les autres taxis et les différents clients, pour éviter que deux taxis aillent voir le même client
 		//on met le nombre de base très haut pour que la détection ne soit pas faussée
-		watched = 0;
+		watched = true;
 		preparedMessage = "";
 		coordDestination = null;
 		free = true; // Au commencement, le taxi est libre
@@ -142,7 +142,7 @@ public class Taxi extends Agent {
 			{
 				String message = clientsPossibles.get(i).getIDclient() + "_" + min;
 				setPreparedMessage(message);
-				watched++; //on annonce aux autres taxis : le client vers lequel on se dirige ainsi que la distance nous séparant du client
+				watched = !watched; //on annonce aux autres taxis : le client vers lequel on se dirige ainsi que la distance nous séparant du client
 				moveTo(clientsPossibles.get(i)); //on se dirige un peu vers le client.
 				return;
 			}
