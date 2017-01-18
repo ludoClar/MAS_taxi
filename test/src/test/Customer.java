@@ -26,7 +26,6 @@ public class Customer extends Agent {
 	protected boolean baby;
 	protected NdPoint dest;
 	protected int IDclient;
-	protected Coordonnees coordPosition;
 	protected Coordonnees coordDestination;
 
 	// Entier pour conntaitre sa satisfaction
@@ -114,7 +113,7 @@ public class Customer extends Agent {
 		if (satisfaction <= 0) {
 			quit = true;
 			originSource.unhappyClient();
-			Context context = ContextUtils.getContext(this);
+			Context<?> context = ContextUtils.getContext(this);
 			context.remove(this);
 		}
 		else { //the client shout for a taxi

@@ -281,7 +281,7 @@ public class Taxi extends Agent {
 			free = false; //le taxi est maintenant occupé
 			coordAttente = null; //il n'a plus besoin d'aller vers un point aléatoire
 			coordDestination = cust.getdestination();
-			Context context = ContextUtils.getContext(this);
+			Context<?> context = ContextUtils.getContext(this);
 			cust.happyClient(); //on annonce au client qu'il est bien pris en charge, pour qu'il le transmette a sa source d'origine
 			context.remove(cust); //on supprime le client
 

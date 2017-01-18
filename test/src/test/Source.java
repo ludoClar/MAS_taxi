@@ -21,9 +21,6 @@ import repast.simphony.util.ContextUtils;
 
 public class Source extends Agent {
 
-	// Stocke les coordonnees de la source
-	protected Coordonnees coordonnees;
-
 	// Pourcentage de clients crees par la source qui auront un bebe
 	protected int pourcentageBaby;
 
@@ -54,7 +51,7 @@ public class Source extends Agent {
 	}
 
 	public Coordonnees getCoordonnees() {
-		return coordonnees;
+		return coordPosition;
 	}
 
 	public void setStart(int start) {
@@ -62,7 +59,7 @@ public class Source extends Agent {
 	}
 
 	public void setCoordonnees(Coordonnees coordonnees) {
-		this.coordonnees = coordonnees;
+		this.coordPosition = coordonnees;
 	}
 
 	public void happyClient() {
@@ -114,16 +111,6 @@ public class Source extends Agent {
 	 * rien du tout.																*
 	 * =============================================================================*/
 	public void compute() {
-
-		/*--------------ANNONCE DE LA SATISFACTION-----------------*/
-		if (nextClient == 10) //on ne fait apparaitre le message que si le client est sur le point d'apparaitre.
-		{
-			float ratio = -1;
-			int total = happyClients + angryClients;
-			if (total != 0)
-				ratio = (float) happyClients / total;
-			//System.out.println("Ratio from the source " + idSource + ": " + ratio);
-		}
 		if (nextClient > 0) //compute() est lancée à chaque tick, mais on ne veut pas que un client apparaisse à chaque tick.
 			nextClient--;
 		else {
@@ -157,7 +144,7 @@ public class Source extends Agent {
 
 			client.setIDclient(idSource + idClient * step);
 			client.setDestination(destination);
-			client.setCoordonnees(this.coordonnees);
+			client.setCoordonnees(this.coordPosition);
 			client.setSatisfaction(randSatisfaction);
 			client.setOriginSource(this);
 
@@ -167,7 +154,7 @@ public class Source extends Agent {
 			context.add(client);
 
 			// On crée le client à la position donnée
-			space.moveTo(client, coordonnees.getX(), coordonnees.getY());
+			space.moveTo(client, coordPosition.getX(), coordPosition.getY());
 
 			// On incremente l'id client (permet de ne pas avoir 2 clients avec le meme id)
 			idClient++;
