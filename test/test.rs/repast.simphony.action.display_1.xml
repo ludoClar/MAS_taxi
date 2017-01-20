@@ -39,7 +39,7 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>1319526704</hashCode>
+    <hashCode>1224419707</hashCode>
   </schedParams>
   <layoutClassName>foo.bar.baz</layoutClassName>
   <layoutProjection>space</layoutProjection>
@@ -47,15 +47,15 @@
   <layerOrder>
     <entry>
       <string>test.Source</string>
-      <int>1</int>
+      <int>0</int>
     </entry>
     <entry>
       <string>test.Customer</string>
-      <int>2</int>
+      <int>1</int>
     </entry>
     <entry>
       <string>test.Taxi</string>
-      <int>0</int>
+      <int>2</int>
     </entry>
   </layerOrder>
   <projections>

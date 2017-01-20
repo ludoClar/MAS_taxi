@@ -155,11 +155,11 @@ public class Taxi extends Agent {
 		}
 		else //si le taxi ne trouve pas de client
 		{
-			//il se dirige vers un point aléatoire pendant 150 ticks ou jusqu'a ce qu'il soit à moins de .5 de ce point, à ce moment il décide d'un autre point.
+			//il se dirige vers un point aléatoire pendant 150 ticks ou jusqu'a ce qu'il soit à moins de .2 de ce point, à ce moment il décide d'un autre point.
 			if (coordAttente != null) {
 				Coordonnees coordTaxi = new Coordonnees(space.getLocation(this).getX(), space.getLocation(this).getY());
 				double distance = coordAttente.getDistance(coordTaxi);
-				if (dureeChangementDirection > 0 && distance > .5) {
+				if (dureeChangementDirection > 0 && distance > .2) {
 					moveTo(coordAttente);
 					dureeChangementDirection--;
 				}
@@ -314,7 +314,7 @@ public class Taxi extends Agent {
 
 		//on regarde si on est arrivés à destination
 		distance = space.getDistance(myPoint, otherPoint);
-		if (distance <= 0.19) {
+		if (distance< 0.5) {
 			free = true;
 		}
 	}
